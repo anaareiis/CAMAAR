@@ -1,22 +1,24 @@
-# language: pt
-Funcionalidade: Sistema de definição de senha
-  Como Usuário do sistema
-  Quero definir minha senha de acesso ao receber o convite de cadastro
-  A fim de garantir acesso seguro e personalizado ao sistema
+Funcionalidade: Definir senha da conta
 
-  Contexto:
-    Dado que o usuário recebeu um e-mail de convite de cadastro com um link válido
-    E acessa o link de definição de senha
+Como um usuário do sistema
+Quero definir uma senha para minha conta através do e-mail de solicitação de cadastro
+Para que eu possa acessar o sistema
 
-  Cenário: Definição de senha com sucesso (Caminho Feliz)
-    Quando o usuário preenche o campo "Nova Senha" com uma senha válida
-    E confirma a senha no campo "Confirmar Senha"
-    E aciona o botão "Definir Senha"
-    Então o sistema deve salvar a senha criptografada no banco de dados
-    E exibir a mensagem "Senha definida com sucesso"
-    E redirecionar o usuário para a tela de login
+Contexto:
+  Dado que uma solicitação de cadastro foi enviada para "user@unb.br"
+  E que eu recebi o e-mail de ativação da conta
+  E que estou na página de definição de senha
 
-  Cenário: Falha ao definir senha com link expirado (Caminho Triste)
-    Quando o usuário tenta acessar um link de definição de senha expirado
-    Então o sistema deve rejeitar a requisição
-    E exibir a mensagem "O link de definição de senha expirou. Solicite um novo acesso ao administrador"
+Cenário: Definir senha com sucesso (happy path)
+  Quando eu preencho "Senha" com "StrongPass123"
+  E eu preencho "Confirmar Senha" com "StrongPass123"
+  E eu clico em "Salvar Senha"
+  Então eu devo ver "Senha definida com sucesso"
+  E devo ser redirecionado para a página de login
+
+Cenário: Tentar definir senha com confirmação diferente (sad path)
+  Quando eu preencho "Senha" com "StrongPass123"
+  E eu preencho "Confirmar Senha" com "WrongPass456"
+  E eu clico em "Salvar Senha"
+  Então devo permanecer na página de definição de senha
+  E devo ver "As senhas não coincidem"
