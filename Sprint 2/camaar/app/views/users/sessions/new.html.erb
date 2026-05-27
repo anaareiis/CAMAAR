@@ -1,0 +1,27 @@
+<div class="auth-card">
+  <div class="auth-card__form">
+    <h2 class="auth-title">Login</h2>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="field">
+        <%= f.label :login, "E-mail ou Matrícula" %>
+        <%= f.text_field :login, autofocus: true, placeholder: "email@unb.br ou matrícula" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password, "Senha" %>
+        <%= f.password_field :password, placeholder: "Senha" %>
+      </div>
+
+      <%= f.submit "Entrar", class: "btn-primary" %>
+    <% end %>
+
+    <div class="auth-links">
+      <%= link_to "Esqueci minha senha", new_user_password_path %>
+    </div>
+  </div>
+
+  <div class="auth-card__welcome">
+    Bem vindo ao Camaar
+  </div>
+</div>
