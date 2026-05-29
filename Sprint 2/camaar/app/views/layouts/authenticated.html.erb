@@ -130,8 +130,7 @@
 
         <% if current_user.admin? %>
           <span class="nav-section">Gerenciamento</span>
-          <%= link_to "Importar Usuários", "#" %>
-          <%= link_to "Turmas por Departamento", "#" %>
+          <%= link_to "Turmas do Departamento", admin_turmas_path %>
         <% end %>
       </nav>
 

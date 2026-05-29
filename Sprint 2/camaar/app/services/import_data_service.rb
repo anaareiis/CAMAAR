@@ -38,10 +38,13 @@ class ImportDataService
 
     classes_data.each do |class_data|
 
+      department = class_data['code'].gsub(/[0-9]/, '').strip
+
       disciplina = Disciplina.find_or_create_by(
         codigo: class_data['code']
       ) do |d|
         d.nome = class_data['name']
+        d.department = department
       end
 
       turma_info = class_data['class']

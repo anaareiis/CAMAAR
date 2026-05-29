@@ -10,7 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_05_27_192924) do
+ActiveRecord::Schema[7.1].define(version: 2026_05_29_150417) do
+  create_table "disciplinas", force: :cascade do |t|
+    t.string "codigo"
+    t.string "nome"
+    t.string "department"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["codigo"], name: "index_disciplinas_on_codigo", unique: true
+  end
+
+  create_table "turma_alunos", force: :cascade do |t|
+    t.integer "turma_id", null: false
+    t.integer "aluno_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["turma_id", "aluno_id"], name: "index_turma_alunos_on_turma_id_and_aluno_id", unique: true
+    t.index ["turma_id"], name: "index_turma_alunos_on_turma_id"
+  end
+
+  create_table "turmas", force: :cascade do |t|
+    t.integer "disciplina_id", null: false
+    t.string "codigo"
+    t.string "semestre"
+    t.string "horario"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["disciplina_id"], name: "index_turmas_on_disciplina_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -28,4 +56,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_27_192924) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "turma_alunos", "turmas"
+  add_foreign_key "turmas", "disciplinas"
 end

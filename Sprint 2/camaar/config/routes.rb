@@ -18,6 +18,7 @@ Rails.application.routes.draw do
         post :import
       end
     end
+    resources :turmas, only: [:index]
   end
 
   # Defines the root path route ("/")
