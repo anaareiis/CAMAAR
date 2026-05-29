@@ -1,6 +1,8 @@
 class Turma < ApplicationRecord
   belongs_to :disciplina
-  has_and_belongs_to_many :users
+
+  has_many :turma_alunos, dependent: :destroy
+  has_many :alunos, through: :turma_alunos, source: :user
 
   validates :codigo, :semestre, :horario, presence: true
   validates :disciplina, presence: true
