@@ -67,7 +67,7 @@ RSpec.describe 'Users::Passwords', type: :request do
         }, as: :json
 
         post '/users/sign_in', params: {
-          user: { email: 'usuario@unb.br', password: 'novasenha123' }
+          user: { login: 'usuario@unb.br', password: 'novasenha123' }
         }, as: :json
 
         expect(response).to have_http_status(:ok)
