@@ -11,3 +11,1033 @@ Migrating to DeviseCreateUsers (20260527134708)
   [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260527134708') RETURNING "version"[0m
   [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/arthur/CAMAAR/Sprint 2/camaar/config/environment.rb:5)
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/arthur/CAMAAR/Sprint 2/camaar/config/environment.rb:5)
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddMatriculaToUsers (20260527192924)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.8ms)[0m  [1m[35mALTER TABLE "users" ADD "matricula" varchar[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_matricula" ON "users" ("matricula")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260527192924') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateDisciplinas (20260529150408)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE TABLE "disciplinas" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "codigo" varchar, "nome" varchar, "department" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_disciplinas_on_codigo" ON "disciplinas" ("codigo")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260529150408') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateTurmas (20260529150412)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "turmas" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "disciplina_id" integer NOT NULL, "codigo" varchar, "semestre" varchar, "horario" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_76e53910e3"
+FOREIGN KEY ("disciplina_id")
+  REFERENCES "disciplinas" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_turmas_on_disciplina_id" ON "turmas" ("disciplina_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260529150412') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateTurmaAlunos (20260529150417)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE "turma_alunos" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "turma_id" integer NOT NULL, "aluno_id" integer, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_fdf44613b9"
+FOREIGN KEY ("turma_id")
+  REFERENCES "turmas" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_turma_alunos_on_turma_id" ON "turma_alunos" ("turma_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_turma_alunos_on_turma_id_and_aluno_id" ON "turma_alunos" ("turma_id", "aluno_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260529150417') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+Migrating to AddFirstAccessToUsers (20260601180211)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.3ms)[0m  [1m[35mALTER TABLE "users" ADD "first_access" boolean DEFAULT 1 NOT NULL[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260601180211') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/arthur/CAMAAR/Sprint 2/camaar/config/environment.rb:5)
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/arthur/CAMAAR/Sprint 2/camaar/config/environment.rb:5)
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/arthur/CAMAAR/Sprint 2/camaar/config/environment.rb:5)
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/arthur/CAMAAR/Sprint 2/camaar/config/environment.rb:5)
+  [1m[36mDisciplina Load (0.1ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0097"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mDisciplina Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0097"], ["LIMIT", 1]]
+  [1m[36mDisciplina Create (0.3ms)[0m  [1m[32mINSERT INTO "disciplinas" ("codigo", "nome", "department", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["codigo", "CIC0097"], ["nome", "BANCOS DE DADOS"], ["department", "CIC"], ["created_at", "2026-06-01 19:26:36.864007"], ["updated_at", "2026-06-01 19:26:36.864007"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTurma Create (0.3ms)[0m  [1m[32mINSERT INTO "turmas" ("disciplina_id", "codigo", "semestre", "horario", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["disciplina_id", 1], ["codigo", "TA"], ["semestre", "2021.2"], ["horario", "35T45"], ["created_at", "2026-06-01 19:26:36.892610"], ["updated_at", "2026-06-01 19:26:36.892610"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mDisciplina Load (0.0ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0105"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mDisciplina Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0105"], ["LIMIT", 1]]
+  [1m[36mDisciplina Create (0.2ms)[0m  [1m[32mINSERT INTO "disciplinas" ("codigo", "nome", "department", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["codigo", "CIC0105"], ["nome", "ENGENHARIA DE SOFTWARE"], ["department", "CIC"], ["created_at", "2026-06-01 19:26:36.895488"], ["updated_at", "2026-06-01 19:26:36.895488"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurma Load (0.0ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 2], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTurma Create (0.4ms)[0m  [1m[32mINSERT INTO "turmas" ("disciplina_id", "codigo", "semestre", "horario", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["disciplina_id", 2], ["codigo", "TA"], ["semestre", "2021.2"], ["horario", "35M12"], ["created_at", "2026-06-01 19:26:36.897689"], ["updated_at", "2026-06-01 19:26:36.897689"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mDisciplina Load (0.0ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0202"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mDisciplina Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0202"], ["LIMIT", 1]]
+  [1m[36mDisciplina Create (0.2ms)[0m  [1m[32mINSERT INTO "disciplinas" ("codigo", "nome", "department", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["codigo", "CIC0202"], ["nome", "PROGRAMAÇÃO CONCORRENTE"], ["department", "CIC"], ["created_at", "2026-06-01 19:26:36.900087"], ["updated_at", "2026-06-01 19:26:36.900087"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurma Load (0.0ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 3], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTurma Create (0.5ms)[0m  [1m[32mINSERT INTO "turmas" ("disciplina_id", "codigo", "semestre", "horario", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["disciplina_id", 3], ["codigo", "TA"], ["semestre", "2021.2"], ["horario", "35M34"], ["created_at", "2026-06-01 19:26:36.902196"], ["updated_at", "2026-06-01 19:26:36.902196"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190084006"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "acjpjvjp@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190084006"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "acjpjvjp@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Ana Clara Jordao Perna"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:26:37.108419"], ["updated_at", "2026-06-01 19:26:37.108419"], ["matricula", "190084006"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."reset_password_token" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["reset_password_token", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "reset_password_token" = ?, "reset_password_sent_at" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["updated_at", "2026-06-01 19:26:37.161853"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  Rendering vendor/bundle/ruby/3.0.0/gems/devise-4.9.4/app/views/devise/mailer/reset_password_instructions.html.erb
+  Rendered vendor/bundle/ruby/3.0.0/gems/devise-4.9.4/app/views/devise/mailer/reset_password_instructions.html.erb (Duration: 3.9ms | Allocations: 2087)
+Devise::Mailer#reset_password_instructions: processed outbound mail in 260.8ms
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mDisciplina Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "disciplinas"[0m
+  [1m[36mTurma Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "turmas"[0m
+  [1m[36mTurmaAluno Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "turma_alunos"[0m
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/arthur/CAMAAR/Sprint 2/camaar/config/environment.rb:5)
+  [1m[36mDisciplina Load (0.1ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0097"], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 1], ["LIMIT", 1]]
+  [1m[36mDisciplina Load (0.1ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0105"], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 2], ["LIMIT", 1]]
+  [1m[36mDisciplina Load (0.1ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0202"], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 3], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190084006"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.3ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 1], ["created_at", "2026-06-01 19:32:56.262963"], ["updated_at", "2026-06-01 19:32:56.262963"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200033522"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "andrecarvalhoroure@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200033522"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "andrecarvalhoroure@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Andre Carvalho de Roure"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:56.452461"], ["updated_at", "2026-06-01 19:32:56.452461"], ["matricula", "200033522"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 2], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 2], ["created_at", "2026-06-01 19:32:56.455554"], ["updated_at", "2026-06-01 19:32:56.455554"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "150005491"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "andre.acm97@outlook.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "150005491"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "andre.acm97@outlook.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "André Carvalho Marques"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:56.637612"], ["updated_at", "2026-06-01 19:32:56.637612"], ["matricula", "150005491"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 3], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 3], ["created_at", "2026-06-01 19:32:56.640299"], ["updated_at", "2026-06-01 19:32:56.640299"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190084502"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "antoniovmoura.r@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190084502"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "antoniovmoura.r@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Antonio Vinicius de Moura Rodrigues"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:56.822025"], ["updated_at", "2026-06-01 19:32:56.822025"], ["matricula", "190084502"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 4], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 4], ["created_at", "2026-06-01 19:32:56.824646"], ["updated_at", "2026-06-01 19:32:56.824646"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190102829"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "arthurbarreirosmota@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190102829"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "arthurbarreirosmota@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Arthur Barreiros de Oliveira Mota"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:57.006725"], ["updated_at", "2026-06-01 19:32:57.006725"], ["matricula", "190102829"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 5], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 5], ["created_at", "2026-06-01 19:32:57.009322"], ["updated_at", "2026-06-01 19:32:57.009322"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "202014403"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "arthurcontroleambiental@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "202014403"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "arthurcontroleambiental@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "ARTHUR RODRIGUES NEVES"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:57.190152"], ["updated_at", "2026-06-01 19:32:57.190152"], ["matricula", "202014403"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 6], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 6], ["created_at", "2026-06-01 19:32:57.192944"], ["updated_at", "2026-06-01 19:32:57.192944"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170161561"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "biancaglyciaboueri@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170161561"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "biancaglyciaboueri@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Bianca Glycia Boueri"], ["role", "user"], ["department", "FTD"], ["created_at", "2026-06-01 19:32:57.374823"], ["updated_at", "2026-06-01 19:32:57.374823"], ["matricula", "170161561"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 7], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 7], ["created_at", "2026-06-01 19:32:57.377776"], ["updated_at", "2026-06-01 19:32:57.377776"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190085312"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "peluticaio@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190085312"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "peluticaio@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Caio Otávio Peluti Alencar"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:57.559783"], ["updated_at", "2026-06-01 19:32:57.559783"], ["matricula", "190085312"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 8], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 8], ["created_at", "2026-06-01 19:32:57.562549"], ["updated_at", "2026-06-01 19:32:57.562549"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170007561"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "camilizx2021@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170007561"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "camilizx2021@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Camila Frealdo Fraga"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:57.743919"], ["updated_at", "2026-06-01 19:32:57.743919"], ["matricula", "170007561"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 9], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 9], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 9], ["created_at", "2026-06-01 19:32:57.746570"], ["updated_at", "2026-06-01 19:32:57.746570"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190097591"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "dinhobarros15@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190097591"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "dinhobarros15@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Claudio Roberto Oliveira Peres de Barros"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:57.928238"], ["updated_at", "2026-06-01 19:32:57.928238"], ["matricula", "190097591"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 10], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 10], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 10], ["created_at", "2026-06-01 19:32:57.931171"], ["updated_at", "2026-06-01 19:32:57.931171"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "160025966"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "daltroov777@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "160025966"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "daltroov777@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Daltro Oliveira Vinuto"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:58.112951"], ["updated_at", "2026-06-01 19:32:58.112951"], ["matricula", "160025966"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 11], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 11], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 11], ["created_at", "2026-06-01 19:32:58.115920"], ["updated_at", "2026-06-01 19:32:58.115920"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200016750"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "davimouraamaral@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200016750"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "davimouraamaral@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Davi de Moura Amaral"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:58.297618"], ["updated_at", "2026-06-01 19:32:58.297618"], ["matricula", "200016750"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 12], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 12], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 12], ["created_at", "2026-06-01 19:32:58.300388"], ["updated_at", "2026-06-01 19:32:58.300388"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190086530"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "eduardoxdantas@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190086530"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "eduardoxdantas@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Eduardo Xavier Dantas"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:58.480839"], ["updated_at", "2026-06-01 19:32:58.480839"], ["matricula", "190086530"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 13], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 13], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 13], ["created_at", "2026-06-01 19:32:58.483661"], ["updated_at", "2026-06-01 19:32:58.483661"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190062789"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "enzonleal2016@hotmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190062789"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "enzonleal2016@hotmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Enzo Nunes Leal Sampaio"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:58.665009"], ["updated_at", "2026-06-01 19:32:58.665009"], ["matricula", "190062789"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 14], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 14], ["created_at", "2026-06-01 19:32:58.667778"], ["updated_at", "2026-06-01 19:32:58.667778"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190027304"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "enzoyn@hotmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190027304"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "enzoyn@hotmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Enzo Yoshio Niho"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:58.848934"], ["updated_at", "2026-06-01 19:32:58.848934"], ["matricula", "190027304"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 15], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 15], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 15], ["created_at", "2026-06-01 19:32:58.851539"], ["updated_at", "2026-06-01 19:32:58.851539"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190013249"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "gabrielfaustino99@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190013249"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "gabrielfaustino99@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Gabriel Faustino Lima da Rocha"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:59.033147"], ["updated_at", "2026-06-01 19:32:59.033147"], ["matricula", "190013249"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 16], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 16], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 16], ["created_at", "2026-06-01 19:32:59.035966"], ["updated_at", "2026-06-01 19:32:59.035966"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190087498"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "gabriel.ligoski@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190087498"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "gabriel.ligoski@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Gabriel Ligoski"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:59.215974"], ["updated_at", "2026-06-01 19:32:59.215974"], ["matricula", "190087498"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 17], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 17], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 17], ["created_at", "2026-06-01 19:32:59.218496"], ["updated_at", "2026-06-01 19:32:59.218496"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "202033202"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "gabrielciriatico@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "202033202"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "gabrielciriatico@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "GABRIEL MENDES CIRIATICO GUIMARÃES"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:59.398493"], ["updated_at", "2026-06-01 19:32:59.398493"], ["matricula", "202033202"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 18], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 18], ["created_at", "2026-06-01 19:32:59.401391"], ["updated_at", "2026-06-01 19:32:59.401391"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190014121"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "190014121@aluno.unb.br"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190014121"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "190014121@aluno.unb.br"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Gustavo Rodrigues dos Santos"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:59.581594"], ["updated_at", "2026-06-01 19:32:59.581594"], ["matricula", "190014121"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 19], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 19], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 19], ["created_at", "2026-06-01 19:32:59.584431"], ["updated_at", "2026-06-01 19:32:59.584431"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190108266"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "gustavorgualberto@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190108266"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "gustavorgualberto@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Gustavo Rodrigues Gualberto"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:32:59.764572"], ["updated_at", "2026-06-01 19:32:59.764572"], ["matricula", "190108266"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 20], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 20], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 20], ["created_at", "2026-06-01 19:32:59.767393"], ["updated_at", "2026-06-01 19:32:59.767393"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180102141"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "igordavid13@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180102141"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "igordavid13@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Igor David Morais"], ["role", "user"], ["department", "FTD"], ["created_at", "2026-06-01 19:32:59.947305"], ["updated_at", "2026-06-01 19:32:59.947305"], ["matricula", "180102141"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 21], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 21], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 21], ["created_at", "2026-06-01 19:32:59.950728"], ["updated_at", "2026-06-01 19:32:59.950728"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180057570"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "ndaffte@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180057570"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "ndaffte@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Jefte Augusto Gomes Batista"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:00.131465"], ["updated_at", "2026-06-01 19:33:00.131465"], ["matricula", "180057570"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 22], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 22], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 22], ["created_at", "2026-06-01 19:33:00.134187"], ["updated_at", "2026-06-01 19:33:00.134187"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190046791"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "karolinasouza@outlook.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190046791"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "karolinasouza@outlook.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Karolina de Souza Silva"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:00.314331"], ["updated_at", "2026-06-01 19:33:00.314331"], ["matricula", "190046791"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 23], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 23], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 23], ["created_at", "2026-06-01 19:33:00.317099"], ["updated_at", "2026-06-01 19:33:00.317099"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200053680"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "kleberrjr7@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200053680"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "kleberrjr7@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Kléber Rodrigues da Costa Júnior"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:00.496558"], ["updated_at", "2026-06-01 19:33:00.496558"], ["matricula", "200053680"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 24], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 24], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 24], ["created_at", "2026-06-01 19:33:00.499439"], ["updated_at", "2026-06-01 19:33:00.499439"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180125559"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "barbadluca@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180125559"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "barbadluca@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Luca Delpino Barbabella"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:00.679723"], ["updated_at", "2026-06-01 19:33:00.679723"], ["matricula", "180125559"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 25], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 25], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 25], ["created_at", "2026-06-01 19:33:00.682570"], ["updated_at", "2026-06-01 19:33:00.682570"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170016668"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "lucasaafaria@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170016668"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "lucasaafaria@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Lucas de Almeida Abreu Faria"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:00.863654"], ["updated_at", "2026-06-01 19:33:00.863654"], ["matricula", "170016668"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 26], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 26], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 26], ["created_at", "2026-06-01 19:33:00.866364"], ["updated_at", "2026-06-01 19:33:00.866364"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190098091"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "lucasramalho29@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190098091"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "lucasramalho29@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Lucas Gonçalves Ramalho"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:01.046043"], ["updated_at", "2026-06-01 19:33:01.046043"], ["matricula", "190098091"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 27], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 27], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 27], ["created_at", "2026-06-01 19:33:01.048808"], ["updated_at", "2026-06-01 19:33:01.048808"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170149684"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "luquinha_miranda@hotmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170149684"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "luquinha_miranda@hotmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Lucas Monteiro Miranda"], ["role", "user"], ["department", "FTD"], ["created_at", "2026-06-01 19:33:01.228712"], ["updated_at", "2026-06-01 19:33:01.228712"], ["matricula", "170149684"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 28], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 28], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 28], ["created_at", "2026-06-01 19:33:01.231484"], ["updated_at", "2026-06-01 19:33:01.231484"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180144421"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "180144421@aluno.unb.br"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180144421"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "180144421@aluno.unb.br"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Lucas Resende Silveira Reis"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:01.410567"], ["updated_at", "2026-06-01 19:33:01.410567"], ["matricula", "180144421"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 29], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 29], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 29], ["created_at", "2026-06-01 19:33:01.413360"], ["updated_at", "2026-06-01 19:33:01.413360"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190016841"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "lflamellas@icloud.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190016841"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "lflamellas@icloud.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Luis Fernando Freitas Lamellas"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:01.592492"], ["updated_at", "2026-06-01 19:33:01.592492"], ["matricula", "190016841"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 30], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 30], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 30], ["created_at", "2026-06-01 19:33:01.595279"], ["updated_at", "2026-06-01 19:33:01.595279"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190112794"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "luizangomes@outlook.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190112794"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "luizangomes@outlook.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Luiza de Araujo Nunes Gomes"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:01.775219"], ["updated_at", "2026-06-01 19:33:01.775219"], ["matricula", "190112794"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 31], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 31], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 31], ["created_at", "2026-06-01 19:33:01.778176"], ["updated_at", "2026-06-01 19:33:01.778176"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180126652"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "180126652@aluno.unb.br"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180126652"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "180126652@aluno.unb.br"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Marcelo Aiache Postiglione"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:01.958373"], ["updated_at", "2026-06-01 19:33:01.958373"], ["matricula", "180126652"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 32], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 32], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 32], ["created_at", "2026-06-01 19:33:01.961101"], ["updated_at", "2026-06-01 19:33:01.961101"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200023624"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "marcelojunqueiraf@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200023624"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "marcelojunqueiraf@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Marcelo Junqueira Ferreira"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:02.140246"], ["updated_at", "2026-06-01 19:33:02.140246"], ["matricula", "200023624"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 33], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 33], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 33], ["created_at", "2026-06-01 19:33:02.142973"], ["updated_at", "2026-06-01 19:33:02.142973"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190092556"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "auntduda@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190092556"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "auntduda@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "MARIA EDUARDA CARVALHO SANTOS"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:02.321988"], ["updated_at", "2026-06-01 19:33:02.321988"], ["matricula", "190092556"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 34], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 34], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 34], ["created_at", "2026-06-01 19:33:02.324727"], ["updated_at", "2026-06-01 19:33:02.324727"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200067184"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "lacwerda@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200067184"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "lacwerda@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Maria Eduarda Lacerda Dantas"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:02.503831"], ["updated_at", "2026-06-01 19:33:02.503831"], ["matricula", "200067184"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 35], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 35], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 35], ["created_at", "2026-06-01 19:33:02.506807"], ["updated_at", "2026-06-01 19:33:02.506807"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190043873"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "mayllak@hotmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190043873"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "mayllak@hotmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Maylla Krislainy de Sousa Silva"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:02.685934"], ["updated_at", "2026-06-01 19:33:02.685934"], ["matricula", "190043873"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 36], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 36], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 36], ["created_at", "2026-06-01 19:33:02.688574"], ["updated_at", "2026-06-01 19:33:02.688574"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180139312"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "pedrocesarribeiro2013@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180139312"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "pedrocesarribeiro2013@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Pedro Cesar Ribeiro Passos"], ["role", "user"], ["department", "FTD"], ["created_at", "2026-06-01 19:33:02.868559"], ["updated_at", "2026-06-01 19:33:02.868559"], ["matricula", "180139312"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 37], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 37], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 37], ["created_at", "2026-06-01 19:33:02.871072"], ["updated_at", "2026-06-01 19:33:02.871072"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170021041"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "170021041@aluno.unb.br"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170021041"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "170021041@aluno.unb.br"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Rafael Mascarenhas Dal Moro"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:03.049584"], ["updated_at", "2026-06-01 19:33:03.049584"], ["matricula", "170021041"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 38], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 38], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 38], ["created_at", "2026-06-01 19:33:03.052356"], ["updated_at", "2026-06-01 19:33:03.052356"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190095164"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "arrelaro1@hotmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190095164"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "arrelaro1@hotmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Rodrigo Mamedio Arrelaro"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:03.230720"], ["updated_at", "2026-06-01 19:33:03.230720"], ["matricula", "190095164"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 39], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 39], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 39], ["created_at", "2026-06-01 19:33:03.233206"], ["updated_at", "2026-06-01 19:33:03.233206"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "140177442"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "thiago.work.ti@outlook.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "140177442"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "thiago.work.ti@outlook.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Thiago de Oliveira Albuquerque"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:03.411594"], ["updated_at", "2026-06-01 19:33:03.411594"], ["matricula", "140177442"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 40], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 40], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 40], ["created_at", "2026-06-01 19:33:03.414093"], ["updated_at", "2026-06-01 19:33:03.414093"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190126892"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "thiagoeliasdosreis01@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190126892"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "thiagoeliasdosreis01@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Thiago Elias dos Reis"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:03.592021"], ["updated_at", "2026-06-01 19:33:03.592021"], ["matricula", "190126892"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 41], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 41], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 41], ["created_at", "2026-06-01 19:33:03.594519"], ["updated_at", "2026-06-01 19:33:03.594519"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180132041"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "aluno0sem.luz@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180132041"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "aluno0sem.luz@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Victor Hugo Rodrigues Fernandes"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:03.772790"], ["updated_at", "2026-06-01 19:33:03.772790"], ["matricula", "180132041"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 42], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 42], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.1ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 42], ["created_at", "2026-06-01 19:33:03.775305"], ["updated_at", "2026-06-01 19:33:03.775305"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200028545"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "viniciuslimapassos@gmail.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200028545"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "viniciuslimapassos@gmail.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "Vinicius Lima Passos"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:03.959749"], ["updated_at", "2026-06-01 19:33:03.959749"], ["matricula", "200028545"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 43], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 43], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 43], ["created_at", "2026-06-01 19:33:03.964154"], ["updated_at", "2026-06-01 19:33:03.964154"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190075384"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "wilxavier@me.com"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190075384"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "wilxavier@me.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "William Xavier dos Santos"], ["role", "user"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:04.148215"], ["updated_at", "2026-06-01 19:33:04.148215"], ["matricula", "190075384"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 44], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 44], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Create (0.2ms)[0m  [1m[32mINSERT INTO "turma_alunos" ("turma_id", "aluno_id", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["turma_id", 1], ["aluno_id", 44], ["created_at", "2026-06-01 19:33:04.151161"], ["updated_at", "2026-06-01 19:33:04.151161"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "mholanda@unb.br"], ["LIMIT", 1]]
+  [1m[36mDisciplina Load (0.1ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "mholanda@unb.br"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "83807519491"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "name", "role", "department", "created_at", "updated_at", "matricula", "first_access") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "mholanda@unb.br"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["name", "MARISTELA TERTO DE HOLANDA"], ["role", "admin"], ["department", "CIC"], ["created_at", "2026-06-01 19:33:04.331699"], ["updated_at", "2026-06-01 19:33:04.331699"], ["matricula", "83807519491"], ["first_access", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."reset_password_token" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["reset_password_token", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "reset_password_token" = ?, "reset_password_sent_at" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["updated_at", "2026-06-01 19:34:09.567749"], ["id", 1]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[36mcommit transaction[0m
+  Rendering vendor/bundle/ruby/3.0.0/gems/devise-4.9.4/app/views/devise/mailer/reset_password_instructions.html.erb
+  Rendered vendor/bundle/ruby/3.0.0/gems/devise-4.9.4/app/views/devise/mailer/reset_password_instructions.html.erb (Duration: 3.4ms | Allocations: 1972)
+Devise::Mailer#reset_password_instructions: processed outbound mail in 312.0ms
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/arthur/CAMAAR/Sprint 2/camaar/config/environment.rb:5)
+  [1m[36mDisciplina Load (0.1ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0097"], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 1], ["LIMIT", 1]]
+  [1m[36mDisciplina Load (0.2ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0105"], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.0ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 2], ["LIMIT", 1]]
+  [1m[36mDisciplina Load (0.0ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0202"], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.0ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 3], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190084006"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200033522"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 2], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "150005491"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 3], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190084502"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 4], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190102829"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 5], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "202014403"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 6], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170161561"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 7], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190085312"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 8], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170007561"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 9], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190097591"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 10], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "160025966"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 11], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200016750"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 12], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190086530"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 13], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190062789"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 14], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190027304"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 15], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190013249"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 16], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190087498"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 17], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "202033202"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190014121"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 19], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190108266"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 20], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180102141"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 21], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180057570"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 22], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190046791"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 23], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200053680"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 24], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180125559"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 25], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170016668"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 26], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190098091"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 27], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170149684"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 28], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180144421"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 29], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190016841"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 30], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190112794"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 31], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180126652"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 32], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200023624"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 33], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190092556"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 34], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200067184"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 35], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190043873"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 36], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180139312"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 37], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170021041"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 38], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190095164"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 39], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "140177442"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 40], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190126892"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 41], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180132041"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 42], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200028545"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 43], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190075384"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 44], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "mholanda@unb.br"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."reset_password_token" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["reset_password_token", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "reset_password_token" = ?, "reset_password_sent_at" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["updated_at", "2026-06-01 19:38:35.112258"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  Rendering vendor/bundle/ruby/3.0.0/gems/devise-4.9.4/app/views/devise/mailer/reset_password_instructions.html.erb
+  Rendered vendor/bundle/ruby/3.0.0/gems/devise-4.9.4/app/views/devise/mailer/reset_password_instructions.html.erb (Duration: 2.1ms | Allocations: 1167)
+Devise::Mailer#reset_password_instructions: processed outbound mail in 326.5ms
+Delivered mail 6a1ddfbb84ff7_8124d3444625@Arthur.mail (40.2ms)
+Date: Mon, 01 Jun 2026 16:38:35 -0300
+From: please-change-me-at-config-initializers-devise@example.com
+Reply-To: please-change-me-at-config-initializers-devise@example.com
+To: acjpjvjp@gmail.com
+Message-ID: <6a1ddfbb84ff7_8124d3444625@Arthur.mail>
+Subject: Reset password instructions
+MIME-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Hello acjpjvjp@gmail.com!</p>
+
+<p>Someone has requested a link to change your password. You can do this through the link below.</p>
+
+<p><a href="http://localhost:3000/users/password/edit?reset_password_token=KUDSXWUXdnkeVkeodLWq">Change my password</a></p>
+
+<p>If you didn't request this, please ignore this email.</p>
+<p>Your password won't change until you access the link above and create a new one.</p>
+
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Update (1.0ms)[0m  [1m[33mUPDATE "users" SET "first_access" = ? WHERE "users"."id" = ?[0m  [["first_access", 0], ["id", 1]]
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/arthur/CAMAAR/Sprint 2/camaar/config/environment.rb:5)
+  [1m[36mDisciplina Load (0.1ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0097"], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 1], ["LIMIT", 1]]
+  [1m[36mDisciplina Load (0.1ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0105"], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 2], ["LIMIT", 1]]
+  [1m[36mDisciplina Load (0.0ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0202"], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.0ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 3], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190084006"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.2ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200033522"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 2], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "150005491"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 3], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190084502"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 4], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190102829"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 5], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "202014403"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 6], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170161561"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 7], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190085312"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 8], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170007561"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 9], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190097591"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 10], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "160025966"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 11], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200016750"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 12], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190086530"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 13], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190062789"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 14], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190027304"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 15], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190013249"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 16], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190087498"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 17], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "202033202"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190014121"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 19], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190108266"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 20], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180102141"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 21], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180057570"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 22], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190046791"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 23], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200053680"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 24], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180125559"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 25], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170016668"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 26], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190098091"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 27], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170149684"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 28], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180144421"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 29], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190016841"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 30], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190112794"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 31], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180126652"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 32], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200023624"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 33], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190092556"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 34], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200067184"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 35], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190043873"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 36], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180139312"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 37], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170021041"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 38], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190095164"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 39], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "140177442"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 40], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190126892"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 41], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180132041"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 42], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200028545"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 43], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190075384"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 44], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "mholanda@unb.br"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."reset_password_token" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["reset_password_token", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "reset_password_token" = ?, "reset_password_sent_at" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["updated_at", "2026-06-01 19:43:56.553446"], ["id", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  Rendering vendor/bundle/ruby/3.0.0/gems/devise-4.9.4/app/views/devise/mailer/reset_password_instructions.html.erb
+  Rendered vendor/bundle/ruby/3.0.0/gems/devise-4.9.4/app/views/devise/mailer/reset_password_instructions.html.erb (Duration: 2.0ms | Allocations: 1168)
+Devise::Mailer#reset_password_instructions: processed outbound mail in 302.9ms
+Delivered mail 6a1de0fce9162_872cd34863e3@Arthur.mail (14.7ms)
+Date: Mon, 01 Jun 2026 16:43:56 -0300
+From: please-change-me-at-config-initializers-devise@example.com
+Reply-To: please-change-me-at-config-initializers-devise@example.com
+To: acjpjvjp@gmail.com
+Message-ID: <6a1de0fce9162_872cd34863e3@Arthur.mail>
+Subject: Reset password instructions
+MIME-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Hello acjpjvjp@gmail.com!</p>
+
+<p>Someone has requested a link to change your password. You can do this through the link below.</p>
+
+<p><a href="http://localhost:3000/users/password/edit?reset_password_token=uHJs3LxqRiYe3x8BoLiH">Change my password</a></p>
+
+<p>If you didn't request this, please ignore this email.</p>
+<p>Your password won't change until you access the link above and create a new one.</p>
+
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."reset_password_token" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["reset_password_token", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (0.1ms)[0m  [1m[33mUPDATE "users" SET "encrypted_password" = ?, "reset_password_token" = ?, "reset_password_sent_at" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["updated_at", "2026-06-01 19:44:54.970180"], ["id", 1]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/arthur/CAMAAR/Sprint 2/camaar/config/environment.rb:5)
+Started GET "/" for 127.0.0.1 at 2026-06-01 16:51:04 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Users::SessionsController#new as HTML
+Completed 200 OK in 83ms (Views: 0.2ms | ActiveRecord: 4.8ms | Allocations: 43663)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-06-01 16:51:04 -0300
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started GET "/index" for 127.0.0.1 at 2026-06-01 16:51:12 -0300
+  
+ActionController::RoutingError (No route matches [GET] "/index"):
+  
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/arthur/CAMAAR/Sprint 2/camaar/config/environment.rb:5)
+  [1m[36mDisciplina Load (0.7ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0097"], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 1], ["LIMIT", 1]]
+  [1m[36mDisciplina Load (0.1ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0105"], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 2], ["LIMIT", 1]]
+  [1m[36mDisciplina Load (0.0ms)[0m  [1m[34mSELECT "disciplinas".* FROM "disciplinas" WHERE "disciplinas"."codigo" = ? LIMIT ?[0m  [["codigo", "CIC0202"], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.0ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? AND "turmas"."disciplina_id" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["disciplina_id", 3], ["LIMIT", 1]]
+  [1m[36mTurma Load (0.1ms)[0m  [1m[34mSELECT "turmas".* FROM "turmas" WHERE "turmas"."codigo" = ? AND "turmas"."semestre" = ? LIMIT ?[0m  [["codigo", "TA"], ["semestre", "2021.2"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190084006"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200033522"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 2], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "150005491"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 3], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190084502"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 4], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190102829"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 5], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "202014403"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 6], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170161561"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 7], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190085312"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 8], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170007561"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 9], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190097591"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 10], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "160025966"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 11], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200016750"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 12], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190086530"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 13], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190062789"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 14], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190027304"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 15], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190013249"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 16], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190087498"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 17], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "202033202"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190014121"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 19], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190108266"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 20], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180102141"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 21], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180057570"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 22], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190046791"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 23], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200053680"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 24], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180125559"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 25], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170016668"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 26], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190098091"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 27], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170149684"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 28], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180144421"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 29], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190016841"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 30], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190112794"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 31], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180126652"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 32], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200023624"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 33], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190092556"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 34], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200067184"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 35], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190043873"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 36], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180139312"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 37], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "170021041"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 38], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190095164"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 39], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "140177442"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 40], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190126892"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 41], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "180132041"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 42], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "200028545"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.1ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 43], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."matricula" = ? LIMIT ?[0m  [["matricula", "190075384"], ["LIMIT", 1]]
+  [1m[36mTurmaAluno Load (0.0ms)[0m  [1m[34mSELECT "turma_alunos".* FROM "turma_alunos" WHERE "turma_alunos"."turma_id" = ? AND "turma_alunos"."aluno_id" = ? LIMIT ?[0m  [["turma_id", 1], ["aluno_id", 44], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "mholanda@unb.br"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."reset_password_token" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["reset_password_token", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "reset_password_token" = ?, "reset_password_sent_at" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["updated_at", "2026-06-01 19:53:12.752035"], ["id", 1]]
+  [1m[36mTRANSACTION (3.0ms)[0m  [1m[36mcommit transaction[0m
+  Rendering vendor/bundle/ruby/3.0.0/gems/devise-4.9.4/app/views/devise/mailer/reset_password_instructions.html.erb
+  Rendered vendor/bundle/ruby/3.0.0/gems/devise-4.9.4/app/views/devise/mailer/reset_password_instructions.html.erb (Duration: 2.1ms | Allocations: 1168)
+Devise::Mailer#reset_password_instructions: processed outbound mail in 317.7ms
+Delivered mail 6a1de3292e89d_915ad34716bf@Arthur.mail (21.6ms)
+Date: Mon, 01 Jun 2026 16:53:13 -0300
+From: please-change-me-at-config-initializers-devise@example.com
+Reply-To: please-change-me-at-config-initializers-devise@example.com
+To: acjpjvjp@gmail.com
+Message-ID: <6a1de3292e89d_915ad34716bf@Arthur.mail>
+Subject: Reset password instructions
+MIME-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Hello acjpjvjp@gmail.com!</p>
+
+<p>Someone has requested a link to change your password. You can do this through the link below.</p>
+
+<p><a href="http://localhost:3000/users/password/edit?reset_password_token=txDPyXS3PiaQyN-tgkcs">Change my password</a></p>
+
+<p>If you didn't request this, please ignore this email.</p>
+<p>Your password won't change until you access the link above and create a new one.</p>
+
+Started GET "/users/password/edit?reset_password_token=[FILTERED]" for ::1 at 2026-06-01 16:53:41 -0300
+Processing by Users::PasswordsController#edit as HTML
+  Parameters: {"reset_password_token"=>"[FILTERED]"}
+Completed 204 No Content in 1ms (ActiveRecord: 0.0ms | Allocations: 342)
+
+
+Started GET "/users/password/edit?reset_password_token=[FILTERED]" for ::1 at 2026-06-01 16:53:45 -0300
+Processing by Users::PasswordsController#edit as HTML
+  Parameters: {"reset_password_token"=>"[FILTERED]"}
+Completed 204 No Content in 1ms (ActiveRecord: 0.0ms | Allocations: 130)
+
+
+Started GET "/users/password/edit?reset_password_token=[FILTERED]" for ::1 at 2026-06-01 16:54:39 -0300
+Processing by Users::PasswordsController#edit as HTML
+  Parameters: {"reset_password_token"=>"[FILTERED]"}
+Completed 204 No Content in 1ms (ActiveRecord: 0.0ms | Allocations: 130)
+
+
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/arthur/CAMAAR/Sprint 2/camaar/config/environment.rb:5)
+Started GET "/" for 127.0.0.1 at 2026-06-01 16:55:42 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Users::SessionsController#new as HTML
+Completed 200 OK in 86ms (Views: 0.1ms | ActiveRecord: 3.4ms | Allocations: 43657)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-06-01 16:55:47 -0300
+  
+ActionController::RoutingError (No route matches [GET] "/users"):
+  
+Started GET "/index" for 127.0.0.1 at 2026-06-01 16:56:19 -0300
+  
+ActionController::RoutingError (No route matches [GET] "/index"):
+  

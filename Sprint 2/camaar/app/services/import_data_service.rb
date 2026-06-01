@@ -2,8 +2,8 @@ class ImportDataService
 
   def self.import_all
     begin
-      classes_path = Rails.root.join('classes.json')
-      members_path = Rails.root.join('class_members.json')
+      classes_path = Rails.root.join('..', '..', 'classes.json')
+      members_path = Rails.root.join('..', '..', 'class_members.json')
 
       json_exists = File.exist?(classes_path) &&
                     File.exist?(members_path)
@@ -71,23 +71,64 @@ class ImportDataService
 
       next unless turma
 
-      alunos = member_data['dicente'] || []
-
-      alunos.each do |aluno_data|
-
-        user = User.find_or_create_by(
-          matricula: aluno_data['matricula']
-        ) do |u|
-          u.name = aluno_data['nome']
-          u.email = aluno_data['email']
-          u.password = SecureRandom.hex(8)
-        end
-
-        TurmaAluno.find_or_create_by(
-          turma: turma,
-          aluno_id: user.id
-        )
+      (member_data['dicente'] || []).each do |aluno_data|
+        import_student(aluno_data, turma)
       end
+
+      docente_data = member_data['docente']
+
+      import_teacher(docente_data, turma) if docente_data.present?
     end
+  end
+
+  def self.import_student(aluno_data, turma)
+    user = User.find_by(
+      matricula: aluno_data['matricula']
+    )
+
+    unless user
+      curso = aluno_data['curso'] || ''
+      departamento = curso.split('/').last
+
+      user = User.create!(
+        matricula: aluno_data['matricula'],
+        name: aluno_data['nome'],
+        email: aluno_data['email'],
+        role: 'user',
+        department: departamento,
+        first_access: true,
+        password: SecureRandom.hex(16)
+      )
+
+      #user.send_reset_password_instructions
+    end
+
+    TurmaAluno.find_or_create_by(
+      turma: turma,
+      aluno_id: user.id
+    )
+  end
+
+  def self.import_teacher(docente_data,turma)
+    user = User.find_by(
+      email: docente_data['email']
+    )
+
+    unless user
+      department = docente_data['departamento']
+
+      user = User.create!(
+        matricula: docente_data['usuario'],
+        name: docente_data['nome'],
+        email: docente_data['email'],
+        role: 'admin',
+        department: turma.disciplina.department,
+        first_access: true,
+        password: SecureRandom.hex(16)
+      )
+
+      #user.send_reset_password_instructions
+    end
+
   end
 end
