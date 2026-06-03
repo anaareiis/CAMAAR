@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   get 'dashboard', to: 'dashboard#index', as: :dashboard
+
   post 'import_data', to: 'import_data#import', as: :import_data
+  post 'update_data', to: 'update_data#update', as: :update_data
 
   namespace :admin do
     resources :users, only: [] do
