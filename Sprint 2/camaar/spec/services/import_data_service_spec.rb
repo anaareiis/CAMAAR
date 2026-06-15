@@ -6,8 +6,8 @@ RSpec.describe ImportDataService do
     let(:classes_path) { Rails.root.join('..', '..', 'classes.json').to_s }
     let(:members_path) { Rails.root.join('..', '..', 'class_members.json').to_s }
 
-    let(:classes_json) { File.read(Rails.root.join('spec/fixtures/classes.json')) }
-    let(:members_json) { File.read(Rails.root.join('spec/fixtures/class_members.json')) }
+    let(:classes_json) { File.read(Rails.root.join('..','..','classes.json')) }
+    let(:members_json) { File.read(Rails.root.join('..','..','class_members.json')) }
 
     before do
       allow(File).to receive(:read).and_call_original
@@ -85,10 +85,12 @@ RSpec.describe ImportDataService do
     # ─── Arquivos ausentes ────────────────────────────────────────────────────
 
     context 'quando os arquivos não existem' do
-
       before do
-        allow(File).to receive(:exist?).with(classes_path).and_return(false)
-        allow(File).to receive(:exist?).with(members_path).and_return(false)
+        allow(File).to receive(:exist?).and_call_original
+
+        allow(File).to receive(:exist?) do |path|
+          false
+        end
       end
 
       it 'retorna erro' do
@@ -97,7 +99,6 @@ RSpec.describe ImportDataService do
         expect(result[:success]).to be false
         expect(result[:error]).to eq('Arquivos não localizados')
       end
-
     end
 
     # ─── JSON inválido ────────────────────────────────────────────────────────
@@ -105,8 +106,7 @@ RSpec.describe ImportDataService do
     context 'quando o JSON é inválido' do
 
       before do
-        allow(File).to receive(:read).with(classes_path).and_return('json inválido')
-        allow(File).to receive(:read).with(members_path).and_return('json inválido')
+        allow(File).to receive(:read).and_return('json inválido')
       end
 
       it 'retorna erro de leitura' do
