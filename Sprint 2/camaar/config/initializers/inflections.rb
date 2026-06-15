@@ -14,3 +14,8 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym "RESTful"
 # end
+
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.irregular 'avaliacao', 'avaliacoes'
+  inflect.irregular 'resposta',  'respostas'
+end

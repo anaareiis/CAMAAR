@@ -131,6 +131,13 @@
         <% if current_user.admin? %>
           <span class="nav-section">Gerenciamento</span>
           <%= link_to "Turmas do Departamento", admin_turmas_path %>
+          <%= link_to "Templates", templates_path %>
+          <span class="nav-section">Formulários</span>
+          <%= link_to "Formulários de Avaliação", avaliacoes_path %>
+          <%= link_to "Novo Formulário", new_avaliacao_path %>
+        <% else %>
+          <span class="nav-section">Formulários</span>
+          <%= link_to "Formulários para Responder", avaliacoes_path %>
         <% end %>
       </nav>
 
