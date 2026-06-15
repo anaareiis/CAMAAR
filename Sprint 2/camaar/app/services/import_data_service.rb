@@ -55,6 +55,7 @@ class ImportDataService
         disciplina: disciplina
       ) do |t|
         t.horario = turma_info['time']
+        t.disciplina = disciplina
       end
     end
   end
@@ -63,14 +64,9 @@ class ImportDataService
 
     members_data.each do |member_data|
 
-      disciplina = Disciplina.find_by(
-        codigo: member_data['code']
-      )
-      
       turma = Turma.find_by(
         codigo: member_data['classCode'],
-        semestre: member_data['semester'],
-        disciplina: disciplina
+        semestre: member_data['semester']
       )
 
       next unless turma
@@ -115,10 +111,11 @@ class ImportDataService
 
   def self.import_teacher(docente_data,turma)
     user = User.find_by(
-      matricula: docente_data['usuario']
+      email: docente_data['email']
     )
 
     unless user
+      department = docente_data['departamento']
 
       user = User.create!(
         matricula: docente_data['usuario'],
