@@ -10,11 +10,9 @@ RSpec.describe ImportDataService do
     let(:members_json) { File.read(Rails.root.join('spec/fixtures/class_members.json')) }
 
     before do
-      # Fallback: Rails continua lendo seus próprios arquivos normalmente
       allow(File).to receive(:read).and_call_original
       allow(File).to receive(:exist?).and_call_original
 
-      # Stubs por path — sem fila, chamadas ilimitadas sempre retornam o mesmo valor
       allow(File).to receive(:read).with(classes_path).and_return(classes_json)
       allow(File).to receive(:read).with(members_path).and_return(members_json)
       allow(File).to receive(:exist?).with(classes_path).and_return(true)
@@ -69,7 +67,6 @@ RSpec.describe ImportDataService do
       it 'não duplica registros ao importar duas vezes' do
         described_class.import_all
 
-        # Stubs por path suportam chamadas repetidas — segunda importação funciona
         disciplinas = Disciplina.count
         turmas      = Turma.count
         usuarios    = User.count
