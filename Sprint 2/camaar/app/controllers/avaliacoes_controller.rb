@@ -81,7 +81,7 @@ class AvaliacoesController < ApplicationController
   end
 
   def build_respostas
-    (params[:respostas] || {}).map do |questao_id, texto|
+    (params[:respostas]&.to_unsafe_h || {}).map do |questao_id, texto|
       Resposta.new(user: current_user, avaliacao: @avaliacao,
                    questao_id: questao_id, texto: texto)
     end

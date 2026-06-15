@@ -1,4 +1,6 @@
 class Avaliacao < ApplicationRecord
+  self.table_name = 'avaliacaos'
+
   TIPOS = %w[discente docente].freeze
 
   belongs_to :template
