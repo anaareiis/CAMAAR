@@ -5,6 +5,10 @@ class User < ApplicationRecord
   attr_accessor :login
 
   ROLES = %w[admin user].freeze
+
+  has_many :turma_alunos, foreign_key: :aluno_id, dependent: :destroy
+  has_many :turmas, through: :turma_alunos
+  has_many :respostas, dependent: :destroy
   validates :name, presence: true
   validates :role, inclusion: { in: ROLES }, allow_nil: true
   validates :matricula, uniqueness: true, allow_nil: true
