@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :templates
+  resources :avaliacoes, only: [:new, :create]
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',

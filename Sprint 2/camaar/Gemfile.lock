@@ -171,6 +171,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.17.2-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.17.2-x64-mingw32)
+      racc (~> 1.4)
     nokogiri (1.17.2-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.17.2-x86_64-linux)
@@ -259,6 +261,7 @@ GEM
     sqlite3 (1.7.3)
       mini_portile2 (~> 2.8.0)
     sqlite3 (1.7.3-arm64-darwin)
+    sqlite3 (1.7.3-x64-mingw32)
     sqlite3 (1.7.3-x86_64-darwin)
     sqlite3 (1.7.3-x86_64-linux)
     stringio (3.2.0)
@@ -267,6 +270,8 @@ GEM
     tsort (0.2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2026.2)
+      tzinfo (>= 1.0.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     warden-jwt_auth (0.12.0)
@@ -283,6 +288,7 @@ GEM
 PLATFORMS
   arm64-darwin
   ruby
+  x64-mingw32
   x86_64-darwin
   x86_64-linux
 

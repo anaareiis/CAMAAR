@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_05_29_150417) do
+ActiveRecord::Schema[7.1].define(version: 2026_06_15_012742) do
+  create_table "avaliacaos", force: :cascade do |t|
+    t.datetime "data_inicio"
+    t.datetime "data_fim"
+    t.integer "template_id", null: false
+    t.integer "turma_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["template_id"], name: "index_avaliacaos_on_template_id"
+    t.index ["turma_id"], name: "index_avaliacaos_on_turma_id"
+  end
+
   create_table "disciplinas", force: :cascade do |t|
     t.string "codigo"
     t.string "nome"
@@ -18,6 +29,20 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_29_150417) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["codigo"], name: "index_disciplinas_on_codigo", unique: true
+  end
+
+  create_table "questaos", force: :cascade do |t|
+    t.string "enunciado"
+    t.integer "template_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["template_id"], name: "index_questaos_on_template_id"
+  end
+
+  create_table "templates", force: :cascade do |t|
+    t.string "titulo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "turma_alunos", force: :cascade do |t|
@@ -56,6 +81,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_29_150417) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "avaliacaos", "templates"
+  add_foreign_key "avaliacaos", "turmas"
+  add_foreign_key "questaos", "templates"
   add_foreign_key "turma_alunos", "turmas"
   add_foreign_key "turmas", "disciplinas"
 end
