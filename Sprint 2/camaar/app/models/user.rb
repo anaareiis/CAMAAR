@@ -24,4 +24,17 @@ class User < ApplicationRecord
   def admin?
     role == 'admin'
   end
+
+  #adicionando verificações de primeiro acesso
+  def first_access?
+    first_access
+  end
+
+  def password_defined?
+    !first_access?
+  end
+
+  def needs_password_reset?
+    first_access?
+  end
 end

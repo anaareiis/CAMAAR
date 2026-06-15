@@ -22,6 +22,8 @@ class Users::PasswordsController < Devise::PasswordsController
 
     respond_to do |format|
       if resource.errors.empty?
+
+        resource.update_column(:first_access, false) if resource.first_access?
         format.html { redirect_to new_user_session_path, notice: 'Senha redefinida com sucesso. Faça login.' }
         format.json { render json: { message: 'Senha redefinida com sucesso.' }, status: :ok }
       else
