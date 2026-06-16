@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       get  :responder
       post :submeter
       get  :resultados
+      get :exportar_csv
     end
   end
 

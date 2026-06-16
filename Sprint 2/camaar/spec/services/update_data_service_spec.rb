@@ -8,8 +8,8 @@ RSpec.describe UpdateDataService do
     let(:members_path) { Rails.root.join('..', '..', 'class_members.json').to_s }
 
     # Lê os fixtures uma vez (File.read real, antes de qualquer stub)
-    let(:classes_json) { File.read(Rails.root.join('spec/fixtures/classes.json')) }
-    let(:members_json) { File.read(Rails.root.join('spec/fixtures/class_members.json')) }
+    let(:classes_json) { File.read(Rails.root.join('..','..','classes.json')) }
+    let(:members_json) { File.read(Rails.root.join('..','..','class_members.json')) }
 
     before do
       # Fallback: qualquer leitura não stubada continua funcionando
@@ -118,11 +118,12 @@ RSpec.describe UpdateDataService do
     # ─── Arquivos ausentes ────────────────────────────────────────────────────
 
     context 'quando os arquivos não existem' do
-
       before do
-        # Sobrescreve apenas os paths do SIGAA — Rails continua funcionando
-        allow(File).to receive(:exist?).with(classes_path).and_return(false)
-        allow(File).to receive(:exist?).with(members_path).and_return(false)
+        allow(File).to receive(:exist?).and_call_original
+
+        allow(File).to receive(:exist?) do |path|
+          false
+        end
       end
 
       it 'retorna erro' do
@@ -139,10 +140,7 @@ RSpec.describe UpdateDataService do
     context 'quando o JSON é inválido' do
 
       before do
-        # Sobrescreve os paths do SIGAA com conteúdo inválido
-        # (exist? ainda retorna true pelo before do contexto pai)
-        allow(File).to receive(:read).with(classes_path).and_return('json inválido')
-        allow(File).to receive(:read).with(members_path).and_return('json inválido')
+        allow(File).to receive(:read).and_return('json inválido')
       end
 
       it 'retorna erro ao ler os arquivos JSON' do

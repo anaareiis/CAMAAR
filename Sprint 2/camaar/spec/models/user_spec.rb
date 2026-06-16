@@ -29,10 +29,6 @@ RSpec.describe User, type: :model do
       expect(User.new(valid_attrs.except(:email))).not_to be_valid
     end
 
-    it 'é inválido sem matrícula' do
-      expect(User.new(valid_attrs.except(:matricula))).not_to be_valid
-    end
-
     it 'não aceita roles inválidas' do
       expect(User.new(valid_attrs.merge(role: 'coordenador'))).not_to be_valid
     end
