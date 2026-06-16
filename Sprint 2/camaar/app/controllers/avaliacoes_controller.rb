@@ -1,7 +1,9 @@
+require 'csv'
+
 class AvaliacoesController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin!, only: [:new, :create, :resultados]
-  before_action :set_avaliacao, only: [:show, :responder, :submeter, :resultados]
+  before_action :set_avaliacao, only: [:show, :responder, :submeter, :resultados, :exportar_csv]
   layout 'authenticated'
 
   def index
@@ -61,6 +63,32 @@ class AvaliacoesController < ApplicationController
     @questoes = @avaliacao.template.questoes.includes(:respostas)
     @total_respostas = Resposta.where(avaliacao: @avaliacao).select(:user_id).distinct.count
   end
+
+  def exportar_csv
+    respostas = Resposta.where(avaliacao: @avaliacao)
+
+    if respostas.empty?
+      redirect_to resultados_avaliacao_path(@avaliacao),
+                  alert: 'Não existem respostas para exportar'
+      return
+    end
+
+    csv_data = CSV.generate(headers: true) do |csv|
+      csv << ['Aluno', 'Questão', 'Resposta']
+
+      respostas.includes(:user, :questao).each do |resposta|
+        csv << [
+          resposta.user.name,
+          resposta.questao.enunciado,
+          resposta.texto
+        ]
+      end
+    end
+
+    send_data csv_data,
+              filename: "avaliacao_#{@avaliacao.id}.csv",
+              type: 'text/csv'
+  end  
 
   private
 
