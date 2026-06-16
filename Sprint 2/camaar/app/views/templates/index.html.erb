@@ -1,76 +1,27 @@
-<div style="margin-bottom:24px; display:flex; align-items:center; justify-content:space-between;">
+<div style="margin-bottom:24px; display: flex; justify-content: space-between; align-items: center;">
   <div>
-<<<<<<< HEAD
-    <h1 style="font-size:1.4rem; color:#333; margin-bottom:4px;">Gestão de Templates</h1>
-    <p style="color:#888; font-size:0.85rem;">Todos os templates base criados para avaliações</p>
-=======
-    <h1 style="font-size:1.4rem; color:#333; margin-bottom:4px;">Templates</h1>
-    <p style="color:#888; font-size:0.85rem;">Modelos de formulário disponíveis</p>
->>>>>>> 832236a4a761dc4c216a999b67fc2ddd99fd4da8
+    <h1 style="font-size:1.4rem; color:#333; margin-bottom:4px;">Templates de Avaliação</h1>
+    <p style="color:#888; font-size:0.85rem;">Lista de todos os templates registados no sistema</p>
   </div>
-  <%= link_to "Novo Template", new_template_path,
-        style: "background:#6B2482; color:white; padding:8px 16px; border-radius:4px; text-decoration:none; font-size:0.88rem;" %>
+  
+  <%= link_to "Novo Template", new_template_path, style: "background-color: #2563eb; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: bold;" %>
 </div>
 
-<% if @templates.empty? %>
-<<<<<<< HEAD
-  <p style="color:#888; font-size:0.9rem;">Nenhum template cadastrado.</p>
-<% else %>
-  <table style="width:100%; border-collapse:collapse; background:#fff; border-radius:4px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,0.08);">
-    <thead>
-      <tr style="background:#6B2482; color:white; font-size:0.82rem; text-transform:uppercase; letter-spacing:0.5px;">
-        <th style="padding:12px 16px; text-align:left;">Título do Template</th>
-        <th style="padding:12px 16px; text-align:left;">Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @templates.each_with_index do |template, i| %>
-        <tr style="border-bottom:1px solid #f0f0f0; font-size:0.88rem; background:<%= i.odd? ? '#fafafa' : '#fff' %>;">
-          <td style="padding:12px 16px; color:#333;">
-            <strong><%= template.titulo %></strong>
-          </td>
-          <td style="padding:12px 16px;">
-            <div style="display: flex; gap: 10px; align-items: center;">
-              <%= link_to "Editar", edit_template_path(template),
-                    style: "color:#6B2482; font-size:0.85rem; text-decoration:none;" %>
-              
-              <%= button_to "Deletar", template_path(template), method: :delete, 
-                    form: { data: { turbo_confirm: 'Tem a certeza que deseja remover este template?' }, style: "margin: 0; padding: 0;" }, 
-                    style: "color:#d9534f; font-size:0.85rem; background:none; border:none; cursor:pointer; text-decoration:none; padding: 0;" %>
-            </div>
-          </td>
-        </tr>
+<div style="background:#fff; border-radius:4px; padding:24px; box-shadow:0 1px 6px rgba(0,0,0,0.08);">
+  <div id="templates">
+    <% if @templates.any? %>
+      <% @templates.each do |template| %>
+        <div style="border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 12px;">
+          <p><strong>Nome/ID:</strong> <%= template.id %></p> 
+          
+          <div style="margin-top: 8px;">
+            <%= link_to "Ver", template, style: "margin-right: 8px; color: #2563eb; text-decoration: none;" %>
+            <%= link_to "Editar", edit_template_path(template), style: "margin-right: 8px; color: #2563eb; text-decoration: none;" %>
+          </div>
+        </div>
       <% end %>
-    </tbody>
-  </table>
-<% end %>
-=======
-  <div style="background:#fff; border-radius:4px; box-shadow:0 1px 6px rgba(0,0,0,0.08); padding:48px; text-align:center;">
-    <p style="color:#aaa; font-size:0.95rem; margin-bottom:16px;">Nenhum template de formulário encontrado.</p>
-    <%= link_to "Criar primeiro template", new_template_path,
-          style: "background:#6B2482; color:white; padding:8px 16px; border-radius:4px; text-decoration:none; font-size:0.88rem;" %>
-  </div>
-<% else %>
-  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:16px;">
-    <% @templates.each do |template| %>
-      <div style="background:#fff; border-radius:4px; box-shadow:0 1px 6px rgba(0,0,0,0.08); padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
-        <div>
-          <h2 style="font-size:1rem; color:#333; margin-bottom:8px; font-weight:600;"><%= template.titulo %></h2>
-          <p style="color:#888; font-size:0.82rem;">
-            <%= pluralize(template.questoes.size, "questão", "questões") %>
-          </p>
-        </div>
-        <div style="display:flex; gap:10px; margin-top:16px; align-items:center;">
-          <%= link_to "Visualizar", template_path(template),
-                style: "color:#6B2482; font-size:0.82rem; text-decoration:none;" %>
-          <%= link_to "Editar", edit_template_path(template),
-                style: "color:#555; font-size:0.82rem; text-decoration:none;" %>
-          <%= link_to "Excluir", template_path(template),
-                data: { turbo_method: :delete, turbo_confirm: "Tem certeza? Esta ação não pode ser desfeita." },
-                style: "color:#c0392b; font-size:0.82rem; text-decoration:none; margin-left:auto;" %>
-        </div>
-      </div>
+    <% else %>
+      <p style="color:#888;">Nenhum template encontrado.</p>
     <% end %>
   </div>
-<% end %>
->>>>>>> 832236a4a761dc4c216a999b67fc2ddd99fd4da8
+</div>
