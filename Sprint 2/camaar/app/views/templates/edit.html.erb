@@ -1,0 +1,42 @@
+<div style="margin-bottom:24px;">
+  <h1 style="font-size:1.4rem; color:#333; margin-bottom:4px;">Editar Template</h1>
+  <p style="color:#888; font-size:0.85rem;">Atualize as informações do template base</p>
+</div>
+
+<div style="background:#fff; border-radius:4px; padding:24px; box-shadow:0 1px 6px rgba(0,0,0,0.08);">
+  <%= form_with(model: @template, local: true) do |form| %>
+    
+    <% if @template.errors.any? %>
+      <div style="background:#fdf7f7; border:1px solid #d9534f; border-radius:4px; padding:12px; margin-bottom:20px;">
+        <strong style="color:#d9534f; font-size:0.85rem; display:block; margin-bottom:8px;">Verifique os seguintes erros:</strong>
+        <ul style="color:#d9534f; font-size:0.85rem; margin:0; padding-left:16px;">
+          <% @template.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div style="margin-bottom:24px;">
+      <%= form.label :titulo, "Título do Template", style: "font-size:0.85rem; color:#555; font-weight:600; display:block; margin-bottom:6px;" %>
+      <%= form.text_field :titulo, style: "width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-size:0.9rem; box-sizing:border-box;" %>
+    </div>
+
+    <hr style="border:0; border-top:1px solid #eee; margin:24px 0;">
+    
+    <h3 style="font-size:1.1rem; color:#333; margin-bottom:16px;">Questões</h3>
+    
+    <%= form.fields_for :questoes do |questao_form| %>
+      <div style="background:#fafafa; border:1px solid #eee; border-radius:4px; padding:16px; margin-bottom:16px;">
+        <%= questao_form.label :enunciado, "Enunciado da Questão", style: "font-size:0.85rem; color:#555; font-weight:600; display:block; margin-bottom:6px;" %>
+        <%= questao_form.text_area :enunciado, rows: 3, style: "width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-size:0.9rem; box-sizing:border-box; resize:vertical;" %>
+      </div>
+    <% end %>
+
+    <div style="margin-top:32px; display:flex; align-items:center;">
+      <%= form.submit "Atualizar Template", style: "background:#6B2482; color:white; padding:10px 20px; border:none; border-radius:4px; font-size:0.88rem; cursor:pointer; font-weight:bold;" %>
+      <%= link_to "Cancelar", templates_path, style: "color:#666; text-decoration:none; margin-left:16px; font-size:0.88rem;" %>
+    </div>
+
+  <% end %>
+</div>
