@@ -1,26 +1,36 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
+  before_action :configure_sign_in_params, only: [:create]
 
   # POST /users/sign_in
   def create
-    self.resource = warden.authenticate!(auth_options)
-    sign_in(resource_name, resource)
+    begin
+      self.resource = warden.authenticate!(auth_options)
+      sign_in(resource_name, resource)
 
-    respond_to do |format|
-      format.html { redirect_to dashboard_path }
-      format.json do
-        render json: {
-          message: 'Login realizado com sucesso.',
-          user: {
-            id: resource.id,
-            email: resource.email,
-            name: resource.name,
-            role: resource.role,
-            department: resource.department
-          }
-        }, status: :ok
+      respond_to do |format|
+        format.html { redirect_to dashboard_path }
+        format.json do
+          render json: {
+            message: 'Login realizado com sucesso.',
+            user: {
+              id: resource.id,
+              email: resource.email,
+              name: resource.name,
+              role: resource.role,
+              department: resource.department
+            }
+          }, status: :ok
+        end
       end
+    rescue Warden::InvalidCredentials => e
+      flash.now[:alert] = 'Email/Matrícula ou senha inválidos.'
+      render :new, status: :unprocessable_entity
+    rescue StandardError => e
+      Rails.logger.error("Login error: #{e.message}")
+      flash.now[:alert] = "Erro ao fazer login."
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -35,6 +45,10 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   private
+
+  def configure_sign_in_params
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:login, :email])
+  end
 
   def respond_to_on_destroy
     respond_to do |format|
