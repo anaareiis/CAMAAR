@@ -2,7 +2,7 @@ require 'csv'
 
 class AvaliacoesController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_admin!, only: [:new, :create, :resultados]
+  before_action :require_admin!, only: [:new, :create, :resultados, :exportar_csv]
   before_action :set_avaliacao, only: [:show, :responder, :submeter, :resultados, :exportar_csv]
   layout 'authenticated'
 
@@ -50,7 +50,7 @@ class AvaliacoesController < ApplicationController
     end
 
     respostas = build_respostas
-    if respostas.all?(&:valid?) && respostas.all?(&:save)
+    if respostas.any? && respostas.all?(&:valid?) && respostas.all?(&:save)
       redirect_to avaliacoes_path, notice: "Respostas enviadas com sucesso."
     else
       @questoes = @avaliacao.template.questoes
@@ -98,10 +98,6 @@ class AvaliacoesController < ApplicationController
 
   def avaliacao_params
     params.require(:avaliacao).permit(:template_id, :turma_id, :data_inicio, :data_fim, :tipo)
-  end
-
-  def require_admin!
-    redirect_to dashboard_path, alert: "Acesso restrito." unless current_user.admin?
   end
 
   def ja_respondeu?

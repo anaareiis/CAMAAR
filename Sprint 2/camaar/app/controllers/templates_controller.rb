@@ -1,5 +1,8 @@
 class TemplatesController < ApplicationController
+  before_action :authenticate_user!
+  before_action :require_admin!
   before_action :set_template, only: %i[ show edit update destroy ]
+  layout 'authenticated'
 
   def index
     @templates = Template.all

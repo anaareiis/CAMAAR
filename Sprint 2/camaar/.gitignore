@@ -16,6 +16,12 @@
 /storage/*.sqlite3-*
 /tmp/cache/
 
+# Storage e cache
+/storage/
+/tmp/cache/
+/tmp/pids/
+/tmp/sockets/
+
 # Credenciais
 /config/master.key
 /config/credentials/*.key

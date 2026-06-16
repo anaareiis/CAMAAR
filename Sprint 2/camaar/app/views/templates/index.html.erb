@@ -1,0 +1,38 @@
+<div style="margin-bottom:24px; display:flex; align-items:center; justify-content:space-between;">
+  <div>
+    <h1 style="font-size:1.4rem; color:#333; margin-bottom:4px;">Templates</h1>
+    <p style="color:#888; font-size:0.85rem;">Modelos de formulário disponíveis</p>
+  </div>
+  <%= link_to "Novo Template", new_template_path,
+        style: "background:#6B2482; color:white; padding:8px 16px; border-radius:4px; text-decoration:none; font-size:0.88rem;" %>
+</div>
+
+<% if @templates.empty? %>
+  <div style="background:#fff; border-radius:4px; box-shadow:0 1px 6px rgba(0,0,0,0.08); padding:48px; text-align:center;">
+    <p style="color:#aaa; font-size:0.95rem; margin-bottom:16px;">Nenhum template de formulário encontrado.</p>
+    <%= link_to "Criar primeiro template", new_template_path,
+          style: "background:#6B2482; color:white; padding:8px 16px; border-radius:4px; text-decoration:none; font-size:0.88rem;" %>
+  </div>
+<% else %>
+  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:16px;">
+    <% @templates.each do |template| %>
+      <div style="background:#fff; border-radius:4px; box-shadow:0 1px 6px rgba(0,0,0,0.08); padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <h2 style="font-size:1rem; color:#333; margin-bottom:8px; font-weight:600;"><%= template.titulo %></h2>
+          <p style="color:#888; font-size:0.82rem;">
+            <%= pluralize(template.questoes.size, "questão", "questões") %>
+          </p>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:16px; align-items:center;">
+          <%= link_to "Visualizar", template_path(template),
+                style: "color:#6B2482; font-size:0.82rem; text-decoration:none;" %>
+          <%= link_to "Editar", edit_template_path(template),
+                style: "color:#555; font-size:0.82rem; text-decoration:none;" %>
+          <%= link_to "Excluir", template_path(template),
+                data: { turbo_method: :delete, turbo_confirm: "Tem certeza? Esta ação não pode ser desfeita." },
+                style: "color:#c0392b; font-size:0.82rem; text-decoration:none; margin-left:auto;" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

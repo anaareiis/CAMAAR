@@ -15,7 +15,7 @@ class User < ApplicationRecord
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
-    login = conditions.delete(:login)&.downcase
+    login = conditions.delete(:login)&.strip&.downcase
     where(conditions.to_h).where(
       'lower(email) = :value OR lower(matricula) = :value', value: login
     ).first
