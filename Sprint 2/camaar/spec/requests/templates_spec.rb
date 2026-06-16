@@ -30,7 +30,7 @@ RSpec.describe 'Templates', type: :request do
         get '/templates'
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include('Avaliação de Turma')
+        expect(response.body).to include(template_path(template))
       end
 
       it 'exibe botão para criar novo template' do
@@ -45,7 +45,7 @@ RSpec.describe 'Templates', type: :request do
         get '/templates'
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include('Nenhum template de formulário encontrado')
+        expect(response.body).to include('Nenhum template encontrado')
       end
     end
 
