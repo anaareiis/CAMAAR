@@ -12,11 +12,4 @@ class Admin::TurmasController < ApplicationController
                    .order('disciplinas.codigo, turmas.semestre')
   end
 
-  private
-
-  def require_admin!
-    unless current_user&.admin?
-      render json: { message: 'Acesso negado.' }, status: :forbidden
-    end
-  end
 end

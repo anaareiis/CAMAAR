@@ -1,7 +1,9 @@
+require 'csv'
+
 class AvaliacoesController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_admin!, only: [:new, :create, :resultados]
-  before_action :set_avaliacao, only: [:show, :responder, :submeter, :resultados]
+  before_action :require_admin!, only: [:new, :create, :resultados, :exportar_csv]
+  before_action :set_avaliacao, only: [:show, :responder, :submeter, :resultados, :exportar_csv]
   layout 'authenticated'
 
   def index
@@ -48,7 +50,7 @@ class AvaliacoesController < ApplicationController
     end
 
     respostas = build_respostas
-    if respostas.all?(&:valid?) && respostas.all?(&:save)
+    if respostas.any? && respostas.all?(&:valid?) && respostas.all?(&:save)
       redirect_to avaliacoes_path, notice: "Respostas enviadas com sucesso."
     else
       @questoes = @avaliacao.template.questoes
@@ -62,6 +64,32 @@ class AvaliacoesController < ApplicationController
     @total_respostas = Resposta.where(avaliacao: @avaliacao).select(:user_id).distinct.count
   end
 
+  def exportar_csv
+    respostas = Resposta.where(avaliacao: @avaliacao)
+
+    if respostas.empty?
+      redirect_to resultados_avaliacao_path(@avaliacao),
+                  alert: 'Não existem respostas para exportar'
+      return
+    end
+
+    csv_data = CSV.generate(headers: true) do |csv|
+      csv << ['Aluno', 'Questão', 'Resposta']
+
+      respostas.includes(:user, :questao).each do |resposta|
+        csv << [
+          resposta.user.name,
+          resposta.questao.enunciado,
+          resposta.texto
+        ]
+      end
+    end
+
+    send_data csv_data,
+              filename: "avaliacao_#{@avaliacao.id}.csv",
+              type: 'text/csv'
+  end  
+
   private
 
   def set_avaliacao
@@ -70,10 +98,6 @@ class AvaliacoesController < ApplicationController
 
   def avaliacao_params
     params.require(:avaliacao).permit(:template_id, :turma_id, :data_inicio, :data_fim, :tipo)
-  end
-
-  def require_admin!
-    redirect_to dashboard_path, alert: "Acesso restrito." unless current_user.admin?
   end
 
   def ja_respondeu?

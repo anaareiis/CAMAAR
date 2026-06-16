@@ -61,7 +61,7 @@ RSpec.describe 'Admin::Turmas', type: :request do
     context 'Caminho Triste - sem permissão' do
       it 'rejeita usuário não autenticado' do
         get '/admin/turmas'
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to have_http_status(:redirect)
       end
 
       it 'rejeita usuário comum' do
@@ -69,7 +69,8 @@ RSpec.describe 'Admin::Turmas', type: :request do
         sign_in user
         get '/admin/turmas'
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
       end
     end
   end

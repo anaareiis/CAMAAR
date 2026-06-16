@@ -116,7 +116,7 @@ RSpec.describe 'Admin::Users', type: :request do
       it 'rejeita usuário não autenticado' do
         post '/admin/users/import', params: { data: sigaa_data }, as: :json
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to have_http_status(:redirect)
       end
 
       it 'rejeita usuário comum (não admin)' do
@@ -130,7 +130,8 @@ RSpec.describe 'Admin::Users', type: :request do
 
         post '/admin/users/import', params: { data: sigaa_data }, as: :json
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(dashboard_path)
       end
     end
   end

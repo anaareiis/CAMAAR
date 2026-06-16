@@ -18,11 +18,4 @@ class UpdateDataController < ApplicationController
     end
   end
 
-  private
-
-  def require_admin!
-    unless current_user&.admin?
-      render json: { message: 'Acesso negado.' }, status: :forbidden
-    end
-  end
 end
