@@ -28,24 +28,32 @@
 
 | Issue | Funcionalidade | Responsável | Pontos | Status |
 |-------|----------------|-------------|--------|--------|
-| #104 | Sistema de Login | Ana Luísa Reis Nascente | 3 | Backlog |
-| #100 | Cadastrar usuários do sistema | Ana Luísa Reis Nascente | 3 | Backlog |
-| #107 | Redefinição de senha | Ana Luísa Reis Nascente | 2 | Backlog |
-| #106 | Sistema de gerenciamento por departamento | Ana Luísa Reis Nascente | 3 | Backlog |
-| #105 | Sistema de definição de senha | Arthur Henrique Aprigio dos Santos | 2 | Backlog |
-| #98  | Importar dados do SIGAA | Arthur Henrique Aprigio dos Santos | 3 | Backlog |
-| #108 | Atualizar base de dados com os dados do SIGAA | Arthur Henrique Aprigio dos Santos | 3 | Backlog |
-| #101 | Gerar relatório do administrador | Arthur Henrique Aprigio dos Santos | 3 | Backlog |
-| #102 | Criar template de formulário | Maria Luiza Rodrigues de Sousa | 5 | Backlog |
-| #103 | Criar formulário de avaliação | Maria Luiza Rodrigues de Sousa | 5 | Backlog |
-| #111 | Visualização dos templates criados | Maria Luiza Rodrigues de Sousa | 3 | Backlog |
-| #112 | Edição e deleção de templates | Maria Luiza Rodrigues de Sousa | 3 | Backlog |
-| #110 | Visualização de resultados dos formulários | Gabriel de Sousa | 3 | Backlog |
-| #99  | Responder formulário | Gabriel de Sousa | 3 | Backlog |
-| #109 | Visualização de formulários para responder | Gabriel de Sousa | 3 | Backlog |
-| #113 | Criação de formulário para docentes ou discentes | Gabriel de Sousa | 5 | Backlog |
+| #104 | Sistema de Login | Ana Luísa Reis Nascente | 3 | Done |
+| #100 | Cadastrar usuários do sistema | Ana Luísa Reis Nascente | 3 | Done |
+| #107 | Redefinição de senha | Ana Luísa Reis Nascente | 2 | Done |
+| #106 | Sistema de gerenciamento por departamento | Ana Luísa Reis Nascente | 3 | Done |
+| #105 | Sistema de definição de senha | Arthur Henrique Aprigio dos Santos | 2 | Done |
+| #98  | Importar dados do SIGAA | Arthur Henrique Aprigio dos Santos | 3 | Done |
+| #108 | Atualizar base de dados com os dados do SIGAA | Arthur Henrique Aprigio dos Santos | 3 | Done |
+| #101 | Gerar relatório do administrador | Arthur Henrique Aprigio dos Santos | 3 | Done |
+| #102 | Criar template de formulário | Maria Luiza Rodrigues de Sousa | 5 | Done |
+| #103 | Criar formulário de avaliação | Maria Luiza Rodrigues de Sousa | 5 | Done |
+| #111 | Visualização dos templates criados | Maria Luiza Rodrigues de Sousa | 3 | Done |
+| #112 | Edição e deleção de templates | Maria Luiza Rodrigues de Sousa | 3 | Done |
+| #110 | Visualização de resultados dos formulários | Gabriel de Sousa | 3 | Done |
+| #99  | Responder formulário | Gabriel de Sousa | 3 | Done |
+| #109 | Visualização de formulários para responder | Gabriel de Sousa | 3 | Done |
+| #113 | Criação de formulário para docentes ou discentes | Gabriel de Sousa | 5 | Done |
 
 **Velocity total da Sprint 2:** 51 pontos
+
+---
+
+## Resultados
+
+- **Total de testes RSpec:** 112 exemplos, 0 falhas
+- **Features implementadas:** 16/16
+- **Branch de entrega:** `sprint-2`
 
 ---
 
