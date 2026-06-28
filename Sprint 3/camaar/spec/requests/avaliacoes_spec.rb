@@ -97,6 +97,15 @@ RSpec.describe 'Avaliacoes', type: :request do
           post '/avaliacoes', params: params
         }.not_to change(Avaliacao, :count)
       end
+
+      it 'não cria sem turma' do
+        params = params_validos.deep_merge(avaliacao: { turma_id: nil })
+        expect {
+          post '/avaliacoes', params: params
+        }.not_to change(Avaliacao, :count)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
     end
 
     context 'usuário comum' do
@@ -191,6 +200,16 @@ RSpec.describe 'Avaliacoes', type: :request do
       expect(response.body).to include('Como você avalia a disciplina?')
       expect(response.body).to include('Enviar Respostas')
     end
+
+    it 'redireciona quando o formulário já foi respondido' do
+      Resposta.create!(user: aluno, avaliacao: avaliacao,
+                       questao: template.questoes.first, texto: 'Respondido')
+
+      get "/avaliacoes/#{avaliacao.id}/responder"
+
+      expect(response).to redirect_to(avaliacoes_path)
+      expect(flash[:alert]).to include('já respondeu')
+    end
   end
 
   describe 'POST /avaliacoes/:id/submeter (#99)' do
@@ -230,6 +249,15 @@ RSpec.describe 'Avaliacoes', type: :request do
       }.not_to change(Resposta, :count)
 
       expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it 'rejeita submissão sem respostas' do
+      expect {
+        post "/avaliacoes/#{avaliacao.id}/submeter"
+      }.not_to change(Resposta, :count)
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(flash[:alert]).to include('Preencha todas as questões')
     end
   end
 
@@ -274,6 +302,14 @@ RSpec.describe 'Avaliacoes', type: :request do
 
         expect(response).to have_http_status(:redirect)
         expect(response).to redirect_to(dashboard_path)
+      end
+    end
+
+    context 'não autenticado' do
+      it 'redireciona para login' do
+        get "/avaliacoes/#{avaliacao.id}/resultados"
+
+        expect(response).to have_http_status(:redirect)
       end
     end
   end
