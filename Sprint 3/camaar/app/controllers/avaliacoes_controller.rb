@@ -1,5 +1,7 @@
 require 'csv'
 
+# Controla a criação, listagem, resposta e visualização de resultados dos
+# formulários de avaliação dos fluxos #99, #109, #110 e #113.
 class AvaliacoesController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin!, only: [:new, :create, :resultados, :exportar_csv]
@@ -7,61 +9,45 @@ class AvaliacoesController < ApplicationController
   layout 'authenticated'
 
   def index
-    @avaliacoes = if current_user.admin?
-      Avaliacao.includes(:template, :turma).all
-    else
-      turma_ids = current_user.turmas.pluck(:id)
-      Avaliacao.includes(:template, turma: :disciplina)
-               .para_discentes
-               .where(turma_id: turma_ids)
-               .nao_respondidas_por(current_user)
-    end
+    @avaliacoes = Avaliacao.visiveis_para(current_user)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @avaliacao = Avaliacao.new
-    @templates = Template.all
-    @turmas = Turma.includes(:disciplina).all
+    carregar_opcoes_formulario
   end
 
   def create
     @avaliacao = Avaliacao.new(avaliacao_params)
     if @avaliacao.save
-      redirect_to avaliacoes_path, notice: "Formulário disponibilizado para a turma."
+      redirect_to avaliacoes_path, notice: 'Formulário disponibilizado para a turma.'
     else
-      @templates = Template.all
-      @turmas = Turma.includes(:disciplina).all
+      carregar_opcoes_formulario
       render :new, status: :unprocessable_entity
     end
   end
 
   def responder
-    @questoes = @avaliacao.template.questoes
-    redirect_to avaliacoes_path, alert: "Você já respondeu este formulário." if ja_respondeu?
+    return redirect_to avaliacoes_path, alert: 'Você já respondeu este formulário.' if ja_respondeu?
+
+    carregar_questoes
   end
 
   def submeter
-    if ja_respondeu?
-      redirect_to avaliacoes_path, alert: "Você já respondeu este formulário."
-      return
-    end
+    return redirect_to avaliacoes_path, alert: 'Você já respondeu este formulário.' if ja_respondeu?
 
-    respostas = build_respostas
-    if respostas.any? && respostas.all?(&:valid?) && respostas.all?(&:save)
-      redirect_to avaliacoes_path, notice: "Respostas enviadas com sucesso."
+    if Resposta.salvar_lote(build_respostas)
+      redirect_to avaliacoes_path, notice: 'Respostas enviadas com sucesso.'
     else
-      @questoes = @avaliacao.template.questoes
-      flash.now[:alert] = "Preencha todas as questões."
-      render :responder, status: :unprocessable_entity
+      renderizar_resposta_invalida
     end
   end
 
   def resultados
-    @questoes = @avaliacao.template.questoes.includes(:respostas)
-    @total_respostas = Resposta.where(avaliacao: @avaliacao).select(:user_id).distinct.count
+    @questoes = @avaliacao.questoes_com_respostas
+    @total_respostas = @avaliacao.total_respondentes
   end
 
   def exportar_csv
@@ -88,26 +74,71 @@ class AvaliacoesController < ApplicationController
     send_data csv_data,
               filename: "avaliacao_#{@avaliacao.id}.csv",
               type: 'text/csv'
-  end  
+  end
 
   private
 
+  # Carrega a avaliação informada na rota.
+  #
+  # Não recebe argumentos; usa +params[:id]+. Retorna a instância carregada por
+  # atribuição em +@avaliacao+ e levanta +ActiveRecord::RecordNotFound+ quando
+  # o id não existe. Não altera o banco de dados.
   def set_avaliacao
     @avaliacao = Avaliacao.find(params[:id])
   end
 
+  # Filtra os parâmetros permitidos para criar uma avaliação.
+  #
+  # Não recebe argumentos; lê +params[:avaliacao]+. Retorna um hash de
+  # parâmetros fortes com template, turma, datas e tipo. Não possui efeitos
+  # colaterais.
   def avaliacao_params
     params.require(:avaliacao).permit(:template_id, :turma_id, :data_inicio, :data_fim, :tipo)
   end
 
-  def ja_respondeu?
-    Resposta.exists?(user: current_user, avaliacao: @avaliacao)
+  # Carrega templates e turmas necessários ao formulário de criação.
+  #
+  # Não recebe argumentos. Retorna os dados por meio de +@templates+ e
+  # +@turmas+. Não altera o banco de dados.
+  def carregar_opcoes_formulario
+    @templates = Template.all
+    @turmas = Turma.includes(:disciplina).all
   end
 
+  # Verifica se o usuário atual já respondeu a avaliação carregada.
+  #
+  # Não recebe argumentos. Retorna +true+ ou +false+. Não altera o banco de
+  # dados.
+  def ja_respondeu?
+    @avaliacao.respondida_por?(current_user)
+  end
+
+  # Carrega as questões do template da avaliação atual.
+  #
+  # Não recebe argumentos. Retorna os dados por meio de +@questoes+. Não altera
+  # o banco de dados.
+  def carregar_questoes
+    @questoes = @avaliacao.template.questoes
+  end
+
+  # Cria respostas em memória a partir do payload do formulário.
+  #
+  # Não recebe argumentos; lê +params[:respostas]+. Retorna um array de
+  # +Resposta+. Não persiste registros no banco.
   def build_respostas
     (params[:respostas]&.to_unsafe_h || {}).map do |questao_id, texto|
       Resposta.new(user: current_user, avaliacao: @avaliacao,
                    questao_id: questao_id, texto: texto)
     end
+  end
+
+  # Renderiza novamente o formulário quando a submissão é inválida.
+  #
+  # Não recebe argumentos. Retorna resposta HTTP 422 com as questões carregadas
+  # e mensagem de alerta. Não altera o banco de dados.
+  def renderizar_resposta_invalida
+    carregar_questoes
+    flash.now[:alert] = 'Preencha todas as questões.'
+    render :responder, status: :unprocessable_entity
   end
 end
