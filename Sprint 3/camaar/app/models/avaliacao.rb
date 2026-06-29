@@ -18,13 +18,10 @@ class Avaliacao < ApplicationRecord
   scope :respondidas_por, ->(user) { joins(:respostas).where(respostas: { user_id: user.id }).distinct }
   scope :nao_respondidas_por, ->(user) { where.not(id: respondidas_por(user)) }
 
-  # Lista as avaliações visíveis para o usuário informado.
-  #
-  # +user+ - usuário autenticado que acessa a listagem.
-  # Retorna uma relação de +Avaliacao+. Para admins, contém todos os
-  # formulários; para discentes, contém apenas avaliações discentes das turmas
-  # em que estão matriculados e ainda não respondidas. Não altera o banco de
-  # dados.
+  # a. Descrição: Lista as avaliações visíveis para o usuário autenticado.
+  # b. Argumentos: Recebe o argumento 'user' (objeto User), correspondente ao usuário que acessa a listagem.
+  # c. Retorno: Retorna uma coleção de objetos Avaliacao (ActiveRecord::Relation).
+  # d. Efeitos colaterais: Não possui efeitos colaterais no banco de dados.
   def self.visiveis_para(user)
     return com_dados_de_listagem.all if user.admin?
 
@@ -34,37 +31,36 @@ class Avaliacao < ApplicationRecord
       .nao_respondidas_por(user)
   end
 
-  # Verifica se o usuário informado já respondeu esta avaliação.
-  #
-  # +user+ - usuário autenticado consultado.
-  # Retorna +true+ quando existe ao menos uma resposta desse usuário para a
-  # avaliação; caso contrário, retorna +false+. Não altera o banco de dados.
+  # a. Descrição: Verifica se o usuário informado já submeteu respostas para esta avaliação.
+  # b. Argumentos: Recebe o argumento 'user' (objeto User).
+  # c. Retorno: Retorna um valor booleano (true caso exista resposta, false caso contrário).
+  # d. Efeitos colaterais: Não possui efeitos colaterais.
   def respondida_por?(user)
     respostas.exists?(user: user)
   end
 
-  # Carrega as questões do template com suas respostas.
-  #
-  # Não recebe argumentos. Retorna uma relação de +Questao+ com respostas em
-  # eager loading para a tela de resultados. Não altera o banco de dados.
+  # a. Descrição: Carrega a coleção de questões associadas ao template da avaliação, incluindo suas respectivas respostas precarregadas (eager loading).
+  # b. Argumentos: Não recebe argumentos.
+  # c. Retorno: Retorna uma coleção de objetos Questao (ActiveRecord::Relation).
+  # d. Efeitos colaterais: Não possui efeitos colaterais.
   def questoes_com_respostas
     template.questoes.includes(:respostas)
   end
 
-  # Conta quantos usuários distintos responderam esta avaliação.
-  #
-  # Não recebe argumentos. Retorna um inteiro com o total de respondentes
-  # únicos. Não altera o banco de dados.
+  # a. Descrição: Conta o número total de usuários distintos que responderam a esta avaliação.
+  # b. Argumentos: Não recebe argumentos.
+  # c. Retorno: Retorna um número Inteiro (Integer) correspondente ao total de respondentes únicos.
+  # d. Efeitos colaterais: Não possui efeitos colaterais.
   def total_respondentes
     respostas.select(:user_id).distinct.count
   end
 
   private
 
-  # Valida se a data de fim ocorre após a data de início.
-  #
-  # Não recebe argumentos. Retorna +nil+ e adiciona erro em +data_fim+ quando o
-  # período é inválido. Não persiste alterações no banco de dados.
+  # a. Descrição: Método de validação customizada para garantir coerência cronológica entre o início e o fim da avaliação.
+  # b. Argumentos: Não recebe argumentos.
+  # c. Retorno: Retorna nil caso válido, ou adiciona uma string ao array de 'errors' da instância.
+  # d. Efeitos colaterais: Altera o estado interno do objeto injetando mensagens de erro. Não persiste diretamente no banco.
   def data_fim_posterior_a_data_inicio
     return unless data_inicio.present? && data_fim.present?
     return if data_fim > data_inicio

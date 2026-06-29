@@ -50,28 +50,16 @@ class AvaliacoesController < ApplicationController
     @total_respostas = @avaliacao.total_respondentes
   end
 
+  # [a. Descrição] Exporta os resultados da avaliação em formato CSV.
+  # [b. Argumentos] Nenhum argumento direto.
+  # [c. Retorno] Envia um ficheiro CSV para download ou aciona redirecionamento.
+  # [d. Efeitos Colaterais] Nenhuma alteração na base de dados.
   def exportar_csv
     respostas = Resposta.where(avaliacao: @avaliacao)
 
-    if respostas.empty?
-      redirect_to resultados_avaliacao_path(@avaliacao),
-                  alert: 'Não existem respostas para exportar'
-      return
-    end
+    return redirecionar_sem_respostas if respostas.empty?
 
-    csv_data = CSV.generate(headers: true) do |csv|
-      csv << ['Aluno', 'Questão', 'Resposta']
-
-      respostas.includes(:user, :questao).each do |resposta|
-        csv << [
-          resposta.user.name,
-          resposta.questao.enunciado,
-          resposta.texto
-        ]
-      end
-    end
-
-    send_data csv_data,
+    send_data gerar_csv_respostas(respostas),
               filename: "avaliacao_#{@avaliacao.id}.csv",
               type: 'text/csv'
   end
@@ -124,7 +112,7 @@ class AvaliacoesController < ApplicationController
   # Cria respostas em memória a partir do payload do formulário.
   #
   # Não recebe argumentos; lê +params[:respostas]+. Retorna um array de
-  # +Resposta+. Não persiste registros no banco.
+  # +Resposta+. Não persiste registos no banco.
   def build_respostas
     (params[:respostas]&.to_unsafe_h || {}).map do |questao_id, texto|
       Resposta.new(user: current_user, avaliacao: @avaliacao,
@@ -140,5 +128,31 @@ class AvaliacoesController < ApplicationController
     carregar_questoes
     flash.now[:alert] = 'Preencha todas as questões.'
     render :responder, status: :unprocessable_entity
+  end
+
+  # [a. Descrição] Redireciona a requisição caso não haja respostas para exportar.
+  # [b. Argumentos] Não recebe argumentos.
+  # [c. Retorno] Interrompe o fluxo e redireciona para a view de resultados.
+  # [d. Efeitos Colaterais] Adiciona uma mensagem de alerta na sessão atual.
+  def redirecionar_sem_respostas
+    redirect_to resultados_avaliacao_path(@avaliacao), alert: 'Não existem respostas para exportar'
+  end
+
+  # [a. Descrição] Processa a coleção de respostas e constrói a string em formato CSV.
+  # [b. Argumentos] Recebe 'respostas' (uma coleção de objetos Resposta do ActiveRecord).
+  # [c. Retorno] Retorna uma String formatada contendo os dados do CSV.
+  # [d. Efeitos Colaterais] Não possui efeitos colaterais.
+  def gerar_csv_respostas(respostas)
+    CSV.generate(headers: true) do |csv|
+      csv << ['Aluno', 'Questão', 'Resposta']
+
+      respostas.includes(:user, :questao).each do |resposta|
+        csv << [
+          resposta.user.name,
+          resposta.questao.enunciado,
+          resposta.texto
+        ]
+      end
+    end
   end
 end
