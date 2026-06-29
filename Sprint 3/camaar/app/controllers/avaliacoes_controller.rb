@@ -1,21 +1,23 @@
 require 'csv'
 
+# Gerencia o ciclo de vida das avaliações:
+# criação, resposta, resultados e exportação em CSV.
 class AvaliacoesController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_admin!, only: [:new, :create, :resultados, :exportar_csv]
-  before_action :set_avaliacao, only: [:show, :responder, :submeter, :resultados, :exportar_csv]
+  before_action :require_admin!,
+                only: [:new, :create, :resultados, :exportar_csv]
+  before_action :set_avaliacao,
+                only: [:show, :responder, :submeter,
+                       :resultados, :exportar_csv]
+
   layout 'authenticated'
 
+  # ───────────────────────────────────────────────
+  # Actions
+  # ───────────────────────────────────────────────
+
   def index
-    @avaliacoes = if current_user.admin?
-      Avaliacao.includes(:template, :turma).all
-    else
-      turma_ids = current_user.turmas.pluck(:id)
-      Avaliacao.includes(:template, turma: :disciplina)
-               .para_discentes
-               .where(turma_id: turma_ids)
-               .nao_respondidas_por(current_user)
-    end
+    @avaliacoes = AvaliacaoService.avaliacoes_para(current_user)
   end
 
   def show
@@ -23,91 +25,99 @@ class AvaliacoesController < ApplicationController
 
   def new
     @avaliacao = Avaliacao.new
-    @templates = Template.all
-    @turmas = Turma.includes(:disciplina).all
+    carregar_formulario
   end
 
   def create
     @avaliacao = Avaliacao.new(avaliacao_params)
+
     if @avaliacao.save
-      redirect_to avaliacoes_path, notice: "Formulário disponibilizado para a turma."
+      redirect_to avaliacoes_path,
+                  notice: 'Formulário disponibilizado para a turma.'
     else
-      @templates = Template.all
-      @turmas = Turma.includes(:disciplina).all
+      carregar_formulario
       render :new, status: :unprocessable_entity
     end
   end
 
   def responder
-    @questoes = @avaliacao.template.questoes
-    redirect_to avaliacoes_path, alert: "Você já respondeu este formulário." if ja_respondeu?
+    if AvaliacaoService.ja_respondeu?(@avaliacao, current_user)
+      redirect_to avaliacoes_path,
+                  alert: 'Você já respondeu este formulário.'
+    else
+      @questoes = @avaliacao.template.questoes
+    end
   end
 
   def submeter
-    if ja_respondeu?
-      redirect_to avaliacoes_path, alert: "Você já respondeu este formulário."
-      return
-    end
+    resultado = AvaliacaoService.submeter_respostas(
+      avaliacao: @avaliacao,
+      user: current_user,
+      respostas_params: params[:respostas]
+    )
 
-    respostas = build_respostas
-    if respostas.any? && respostas.all?(&:valid?) && respostas.all?(&:save)
-      redirect_to avaliacoes_path, notice: "Respostas enviadas com sucesso."
+    case resultado
+    when :ja_respondeu
+      redirect_to avaliacoes_path,
+                  alert: 'Você já respondeu este formulário.'
+
+    when true
+      redirect_to avaliacoes_path,
+                  notice: 'Respostas enviadas com sucesso.'
+
     else
-      @questoes = @avaliacao.template.questoes
-      flash.now[:alert] = "Preencha todas as questões."
-      render :responder, status: :unprocessable_entity
+      render_responder_com_erro
     end
   end
 
   def resultados
-    @questoes = @avaliacao.template.questoes.includes(:respostas)
-    @total_respostas = Resposta.where(avaliacao: @avaliacao).select(:user_id).distinct.count
+    @questoes = AvaliacaoService.questoes_resultado(@avaliacao)
+    @total_respostas = AvaliacaoService.total_respostas(@avaliacao)
   end
 
   def exportar_csv
-    respostas = Resposta.where(avaliacao: @avaliacao)
+    csv = AvaliacaoService.exportar_csv(@avaliacao)
 
-    if respostas.empty?
+    unless csv
       redirect_to resultados_avaliacao_path(@avaliacao),
                   alert: 'Não existem respostas para exportar'
       return
     end
 
-    csv_data = CSV.generate(headers: true) do |csv|
-      csv << ['Aluno', 'Questão', 'Resposta']
-
-      respostas.includes(:user, :questao).each do |resposta|
-        csv << [
-          resposta.user.name,
-          resposta.questao.enunciado,
-          resposta.texto
-        ]
-      end
-    end
-
-    send_data csv_data,
+    send_data csv,
               filename: "avaliacao_#{@avaliacao.id}.csv",
               type: 'text/csv'
-  end  
+  end
 
   private
+
+  # ───────────────────────────────────────────────
+  # Helpers
+  # ───────────────────────────────────────────────
+
+  def carregar_formulario
+    @templates = Template.all
+    @turmas = Turma.includes(:disciplina).all
+  end
+
+  def render_responder_com_erro
+    @questoes = @avaliacao.template.questoes
+    flash.now[:alert] = 'Preencha todas as questões.'
+    render :responder,
+           status: :unprocessable_entity
+  end
 
   def set_avaliacao
     @avaliacao = Avaliacao.find(params[:id])
   end
 
   def avaliacao_params
-    params.require(:avaliacao).permit(:template_id, :turma_id, :data_inicio, :data_fim, :tipo)
-  end
-
-  def ja_respondeu?
-    Resposta.exists?(user: current_user, avaliacao: @avaliacao)
-  end
-
-  def build_respostas
-    (params[:respostas]&.to_unsafe_h || {}).map do |questao_id, texto|
-      Resposta.new(user: current_user, avaliacao: @avaliacao,
-                   questao_id: questao_id, texto: texto)
-    end
+    params.require(:avaliacao).permit(
+      :template_id,
+      :turma_id,
+      :data_inicio,
+      :data_fim,
+      :tipo
+    )
   end
 end

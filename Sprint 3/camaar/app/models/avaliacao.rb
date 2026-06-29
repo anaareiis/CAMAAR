@@ -1,3 +1,6 @@
+# Representa uma avaliação do sistema, associada a um template e uma turma,
+# podendo ser do tipo discente ou docente.
+
 class Avaliacao < ApplicationRecord
   self.table_name = 'avaliacaos'
 

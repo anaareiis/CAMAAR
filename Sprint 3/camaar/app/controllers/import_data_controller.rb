@@ -1,3 +1,5 @@
+# Responsável por receber as requisições de importação de dados do SIGAA
+# e delegar o processamento para o ImportDataService.
 class ImportDataController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin!
