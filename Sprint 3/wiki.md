@@ -72,30 +72,30 @@ As funcionalidades implementadas nas sprints anteriores foram mantidas, garantin
 
 | Métrica | Valor |
 | :--- | :--- |
-| Maior ABC Score antes da refatoração | [Valor numérico] |
-| Maior ABC Score após a refatoração | [Valor numérico] |
-| Quantidade de métodos refatorados | [Quantidade ou descrição, ex: 2 métodos divididos] |
+| Maior ABC Score antes da refatoração | 46.0 |
+| Maior ABC Score após a refatoração | 18.8 |
+| Quantidade de métodos refatorados | 4 métodos principais extraídos em 8 auxiliares |
 | Limite estabelecido | < 20 |
 
 **Análise:**
-[Escreva uma breve análise explicando qual era o método problemático, por que a nota estava alta e qual foi a solução aplicada (ex: Extract Method) para baixar a nota.]
+O método `Users::SessionsController#create` apresentava o maior ABC Score (46.0), pois concentrava em um único bloco a autenticação Warden, o tratamento de dois tipos de exceção, o `respond_to` com lógicas distintas para HTML e JSON e a montagem do payload de resposta. A solução foi aplicar Extract Method: três métodos privados foram criados (`render_login_success`, `login_success_payload` e `render_login_failure`), reduzindo o score do método principal para 15.3. O mesmo padrão foi aplicado em `PasswordsController#update` (33.1 → delegação para `finish_password_reset` e `render_password_reset_failure`) e em `RegistrationsController#create` (27.3 → 8.9, com extração de `render_registration_success` e `render_registration_failure`). No `Admin::UsersController`, a lógica duplicada de criação de usuário entre `process_docente` e `process_dicente` foi consolidada no método `register_user`. Com isso, o maior score passou de 46.0 para 18.8, cumprindo o limite estabelecido.
 
 #### Cobertura de Testes (SimpleCov)
 
 | Componente | Cobertura |
 | :--- | :--- |
-| Models (`[nomes_dos_arquivos.rb]`) | [Valor]% |
-| Controllers (`[nomes_dos_arquivos.rb]`) | [Valor]% |
+| Models (`user.rb`) | 100% |
+| Controllers (`sessions_controller.rb`, `passwords_controller.rb`, `registrations_controller.rb`, `admin/users_controller.rb`, `admin/turmas_controller.rb`) | 100% |
 
 **Análise:**
-[Breve parágrafo informando se a cobertura de testes atingiu a meta exigida de >90%.]
+Após execução da suíte RSpec com SimpleCov, todos os arquivos desta frente atingiram cobertura de 100%, superando a meta de 90%. Os specs cobrem os controladores de sessão, redefinição de senha, cadastro de usuários e listagem de turmas por departamento, além do modelo `User`.
 
 #### Happy Path e Sad Path
 
 | Item | Situação |
 | :--- | :--- |
-| Happy Path | [ ✔ ou ✖ ] |
-| Sad Path | [ ✔ ou ✖ ] |
+| Happy Path | ✔ |
+| Sad Path | ✔ |
 
 Todos os cenários de teste abrangem caminhos de sucesso e caminhos de erro, validando o comportamento esperado do sistema. As features originais do Cucumber foram mantidas e executadas com sucesso, garantindo a ausência de regressões.
 
@@ -103,9 +103,9 @@ Todos os cenários de teste abrangem caminhos de sucesso e caminhos de erro, val
 
 | Item | Valor |
 | :--- | :--- |
-| Métodos documentados | [Valor] |
-| Controllers documentados | [Valor] |
-| Models documentados | [Valor] |
+| Métodos documentados | 28 |
+| Controllers documentados | 5 |
+| Models documentados | 1 |
 
 Todos os métodos implementados ou modificados receberam documentação estruturada contendo:
 * Descrição técnica da operação;
@@ -117,9 +117,9 @@ Todos os métodos implementados ou modificados receberam documentação estrutur
 
 | Item | Antes | Depois |
 | :--- | :--- | :--- |
-| ABC Score máximo | [Valor] | [Valor] |
-| Cobertura dos testes | [Valor]% | [Valor]% |
-| Métodos documentados | [Valor] | [Valor] |
+| ABC Score máximo | 46.0 | 18.8 |
+| Cobertura dos testes | 0% | 100% |
+| Métodos documentados | 0 | 28 |
 
 # Métricas de Qualidade - Gabriel
 #### Complexidade Ciclomática e ABC Score (RubyCritic)

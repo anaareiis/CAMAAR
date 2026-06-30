@@ -15,26 +15,32 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
     resource.save
-    if resource.persisted?
-      render json: {
-        message: 'Usuário cadastrado com sucesso.',
-        user: {
-          id: resource.id,
-          email: resource.email,
-          name: resource.name,
-          role: resource.role,
-          department: resource.department
-        }
-      }, status: :created
-    else
-      render json: {
-        message: 'Erro ao cadastrar usuário.',
-        errors: resource.errors.full_messages
-      }, status: :unprocessable_entity
-    end
+    resource.persisted? ? render_registration_success : render_registration_failure
   end
 
   private
+
+  # Renders the success response after a user is created (status 201).
+  def render_registration_success
+    render json: {
+      message: 'Usuário cadastrado com sucesso.',
+      user: {
+        id: resource.id,
+        email: resource.email,
+        name: resource.name,
+        role: resource.role,
+        department: resource.department
+      }
+    }, status: :created
+  end
+
+  # Renders the failure response when the user could not be saved (status 422).
+  def render_registration_failure
+    render json: {
+      message: 'Erro ao cadastrar usuário.',
+      errors: resource.errors.full_messages
+    }, status: :unprocessable_entity
+  end
 
   # Returns the subset of +params[:user]+ that is safe to mass-assign.
   #
