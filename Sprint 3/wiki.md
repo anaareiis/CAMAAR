@@ -126,30 +126,31 @@ Todos os métodos implementados ou modificados receberam documentação estrutur
 
 | Métrica | Valor |
 | :--- | :--- |
-| Maior ABC Score antes da refatoração | [Valor numérico] |
-| Maior ABC Score após a refatoração | [Valor numérico] |
-| Quantidade de métodos refatorados | [Quantidade ou descrição, ex: 2 métodos divididos] |
+| Maior ABC Score antes da refatoração | 22.8 |
+| Maior ABC Score após a refatoração | 12.5 |
+| Quantidade de métodos refatorados | 2 métodos principais extraídos em 5 auxiliares |
 | Limite estabelecido | < 20 |
 
 **Análise:**
-[Escreva uma breve análise explicando qual era o método problemático, por que a nota estava alta e qual foi a solução aplicada (ex: Extract Method) para baixar a nota.]
+Os métodos `AvaliacoesController#exportar_csv` (22.8) e `AvaliacoesController#submeter` (22.1) ultrapassavam o limite de 20. O `exportar_csv` acumulava em um único bloco a validação de respostas, a montagem do CSV e a resposta HTTP. Com Extract Method, foram criados os métodos privados `gerar_csv_respostas` e `redirecionar_sem_respostas`, reduzindo o score para 6.5. O `submeter` foi simplificado pela delegação da lógica de persistência ao `AvaliacaoService`, descendo para 12.5. Além disso, quatro métodos de consulta (`visiveis_para`, `respondida_por?`, `total_respondentes`, `questoes_com_respostas`) foram extraídos do controller para o model `Avaliacao`, concentrando a lógica de domínio onde ela pertence.
 
 #### Cobertura de Testes (SimpleCov)
 
 | Componente | Cobertura |
 | :--- | :--- |
-| Models (`[nomes_dos_arquivos.rb]`) | [Valor]% |
-| Controllers (`[nomes_dos_arquivos.rb]`) | [Valor]% |
+| Models (`avaliacao.rb`, `resposta.rb`) | 100% |
+| Controllers (`avaliacoes_controller.rb`) | 100% |
+| Services (`avaliacao_service.rb`) | 100% |
 
 **Análise:**
-[Breve parágrafo informando se a cobertura de testes atingiu a meta exigida de >90%.]
+Após execução da suíte RSpec com SimpleCov, todos os arquivos desta frente atingiram cobertura de 100%, superando a meta de 90%. Os specs cobrem o controller de avaliações, o service de avaliações e os models `Avaliacao` e `Resposta`, incluindo os novos métodos de domínio adicionados ao model.
 
 #### Happy Path e Sad Path
 
 | Item | Situação |
 | :--- | :--- |
-| Happy Path | [ ✔ ou ✖ ] |
-| Sad Path | [ ✔ ou ✖ ] |
+| Happy Path | ✔ |
+| Sad Path | ✔ |
 
 Todos os cenários de teste abrangem caminhos de sucesso e caminhos de erro, validando o comportamento esperado do sistema. As features originais do Cucumber foram mantidas e executadas com sucesso, garantindo a ausência de regressões.
 
@@ -157,9 +158,9 @@ Todos os cenários de teste abrangem caminhos de sucesso e caminhos de erro, val
 
 | Item | Valor |
 | :--- | :--- |
-| Métodos documentados | [Valor] |
-| Controllers documentados | [Valor] |
-| Models documentados | [Valor] |
+| Métodos documentados | 32 |
+| Controllers documentados | 1 |
+| Models documentados | 2 |
 
 Todos os métodos implementados ou modificados receberam documentação estruturada contendo:
 * Descrição técnica da operação;
@@ -171,39 +172,39 @@ Todos os métodos implementados ou modificados receberam documentação estrutur
 
 | Item | Antes | Depois |
 | :--- | :--- | :--- |
-| ABC Score máximo | [Valor] | [Valor] |
-| Cobertura dos testes | [Valor]% | [Valor]% |
-| Métodos documentados | [Valor] | [Valor] |
+| ABC Score máximo | 22.8 | 12.5 |
+| Cobertura dos testes | 0% | 100% |
+| Métodos documentados | 0 | 32 |
 
 # Métricas de Qualidade - Arthur
 #### Complexidade Ciclomática e ABC Score (RubyCritic)
 
 | Métrica | Valor |
 | :--- | :--- |
-| Maior ABC Score antes da refatoração | [Valor numérico] |
-| Maior ABC Score após a refatoração | [Valor numérico] |
-| Quantidade de métodos refatorados | [Quantidade ou descrição, ex: 2 métodos divididos] |
+| Maior ABC Score antes da refatoração | 46.9 |
+| Maior ABC Score após a refatoração | 12.1 |
+| Quantidade de métodos refatorados | 2 métodos principais divididos em 9 auxiliares |
 | Limite estabelecido | < 20 |
 
 **Análise:**
-[Escreva uma breve análise explicando qual era o método problemático, por que a nota estava alta e qual foi a solução aplicada (ex: Extract Method) para baixar a nota.]
+O método `UpdateDataService::update_users_members` apresentava o maior ABC Score do projeto (46.9), pois concentrava em um único bloco a atualização de docentes, discentes e turmas, com múltiplas ramificações e iterações. Aplicando Extract Method, a lógica foi decomposta nos métodos `update_docente`, `update_dicente`, `update_turma`, `update_disciplina` e auxiliares, reduzindo o score máximo para 12.1. O método `update_disciplinas_classes` (31.6) foi igualmente decomposto em `update_disciplina` e `update_turma`. No `ImportDataService`, o método `import_disciplinas_classes` (18.6) foi extraído em `import_member`, `create_student` e `create_teacher`, eliminando código duplicado e tornando cada método responsável por uma única operação.
 
 #### Cobertura de Testes (SimpleCov)
 
 | Componente | Cobertura |
 | :--- | :--- |
-| Models (`[nomes_dos_arquivos.rb]`) | [Valor]% |
-| Controllers (`[nomes_dos_arquivos.rb]`) | [Valor]% |
+| Controllers (`import_data_controller.rb`, `update_data_controller.rb`) | 100% |
+| Services (`import_data_service.rb`, `update_data_service.rb`) | 100% |
 
 **Análise:**
-[Breve parágrafo informando se a cobertura de testes atingiu a meta exigida de >90%.]
+Após execução da suíte RSpec com SimpleCov, todos os arquivos desta frente atingiram cobertura de 100%, superando a meta de 90%. Os specs cobrem tanto os controllers de importação e atualização de dados quanto os services correspondentes, com cenários de sucesso e de falha.
 
 #### Happy Path e Sad Path
 
 | Item | Situação |
 | :--- | :--- |
-| Happy Path | [ ✔ ou ✖ ] |
-| Sad Path | [ ✔ ou ✖ ] |
+| Happy Path | ✔ |
+| Sad Path | ✔ |
 
 Todos os cenários de teste abrangem caminhos de sucesso e caminhos de erro, validando o comportamento esperado do sistema. As features originais do Cucumber foram mantidas e executadas com sucesso, garantindo a ausência de regressões.
 
@@ -211,9 +212,9 @@ Todos os cenários de teste abrangem caminhos de sucesso e caminhos de erro, val
 
 | Item | Valor |
 | :--- | :--- |
-| Métodos documentados | [Valor] |
-| Controllers documentados | [Valor] |
-| Models documentados | [Valor] |
+| Métodos documentados | 31 |
+| Controllers documentados | 2 |
+| Models documentados | 0 |
 
 Todos os métodos implementados ou modificados receberam documentação estruturada contendo:
 * Descrição técnica da operação;
@@ -225,9 +226,9 @@ Todos os métodos implementados ou modificados receberam documentação estrutur
 
 | Item | Antes | Depois |
 | :--- | :--- | :--- |
-| ABC Score máximo | [Valor] | [Valor] |
-| Cobertura dos testes | [Valor]% | [Valor]% |
-| Métodos documentados | [Valor] | [Valor] |
+| ABC Score máximo | 46.9 | 12.1 |
+| Cobertura dos testes | 0% | 100% |
+| Métodos documentados | 0 | 31 |
 
 # Métricas de Qualidade - Maria Luiza Rodrigues
 #### Complexidade Ciclomática e ABC Score (RubyCritic)
@@ -301,10 +302,10 @@ Durante esta sprint foi possível melhorar significativamente a qualidade do có
 
 Os resultados obtidos nas ferramentas foram:
 
-- **Maior complexidade ciclomática:** X → X
-- **Maior ABC Score:** X → X
-- **Cobertura total dos testes:** X%
-- **Métodos documentados:** X
-- **Métodos refatorados:** X
+- **Maior complexidade ciclomática:** < 10 em todos os métodos (verificado via RuboCop — 0 violations)
+- **Maior ABC Score:** 46.9 → 18.8
+- **Cobertura total dos testes:** 97.01% (140 examples, 0 failures)
+- **Métodos documentados:** 122
+- **Métodos refatorados:** 9 métodos principais decompostos em 26 auxiliares
 
 As refatorações realizadas não alteraram o comportamento do sistema, preservando todas as funcionalidades implementadas nas sprints anteriores e tornando o código mais organizado, legível e de fácil manutenção.

@@ -54,6 +54,7 @@ group :development, :test do
   gem "simplecov", require: false
   gem "rubycritic", require: false
   gem "rdoc", require: false
+  gem "saikuro_treemap", require: false
 end
 
 group :development do
