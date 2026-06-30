@@ -1,9 +1,17 @@
 # frozen_string_literal: true
 
+# Handles user self-registration via the Devise endpoint (Issue #100 -
+# Cadastrar usuários do sistema). Responds exclusively in JSON format.
 class Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
-  # POST /users (cadastrar usuário - Issue #100)
+  # Creates a new user account from the posted JSON body.
+  #
+  # Does not receive explicit arguments; reads the permitted attributes
+  # via +sign_up_params+.
+  # Returns no value; renders a JSON response.
+  # Side effects: persists a new +User+ record on success (status 201);
+  # returns validation errors on failure (status 422). No e-mail is sent.
   def create
     build_resource(sign_up_params)
     resource.save
@@ -28,6 +36,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   private
 
+  # Returns the subset of +params[:user]+ that is safe to mass-assign.
+  #
+  # No arguments. Returns an +ActionController::Parameters+ instance.
+  # No side effects.
   def sign_up_params
     params.require(:user).permit(:email, :password, :password_confirmation, :name, :role, :department)
   end
