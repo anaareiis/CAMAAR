@@ -181,20 +181,20 @@ Todos os métodos implementados ou modificados receberam documentação estrutur
 
 | Métrica | Valor |
 | :--- | :--- |
-| Maior ABC Score antes da refatoração | 46.9 |
-| Maior ABC Score após a refatoração | 12.1 |
+| Maior ABC Score antes da refatoração | 31.59 |
+| Maior ABC Score após a refatoração | 10.63 |
 | Quantidade de métodos refatorados | 2 métodos principais divididos em 9 auxiliares |
 | Limite estabelecido | < 20 |
 
 **Análise:**
-O método `UpdateDataService::update_users_members` apresentava o maior ABC Score do projeto (46.9), pois concentrava em um único bloco a atualização de docentes, discentes e turmas, com múltiplas ramificações e iterações. Aplicando Extract Method, a lógica foi decomposta nos métodos `update_docente`, `update_dicente`, `update_turma`, `update_disciplina` e auxiliares, reduzindo o score máximo para 12.1. O método `update_disciplinas_classes` (31.6) foi igualmente decomposto em `update_disciplina` e `update_turma`. No `ImportDataService`, o método `import_disciplinas_classes` (18.6) foi extraído em `import_member`, `create_student` e `create_teacher`, eliminando código duplicado e tornando cada método responsável por uma única operação.
+O método `UpdateDataService::update_users_members` apresentava o maior ABC Score do projeto (31.59), pois concentrava em um único bloco a atualização de docentes, discentes e turmas, com múltiplas ramificações e iterações. Aplicando Extract Method, a lógica foi decomposta nos métodos `update_docente`, `update_dicente`, `update_turma`, `update_disciplina` e auxiliares, reduzindo o score máximo para 10.63.
 
 #### Cobertura de Testes (SimpleCov)
 
 | Componente | Cobertura |
 | :--- | :--- |
-| Controllers (`import_data_controller.rb`, `update_data_controller.rb`) | 100% |
-| Services (`import_data_service.rb`, `update_data_service.rb`) | 100% |
+| Controllers (`import_data_controller.rb`, `update_data_controller.rb`, `avaliacoes_controller.rb`) | 100% |
+| Services (`import_data_service.rb`, `update_data_service.rb`, `avaliacao_service.rb`) | 100% |
 
 **Análise:**
 Após execução da suíte RSpec com SimpleCov, todos os arquivos desta frente atingiram cobertura de 100%, superando a meta de 90%. Os specs cobrem tanto os controllers de importação e atualização de dados quanto os services correspondentes, com cenários de sucesso e de falha.
@@ -212,9 +212,9 @@ Todos os cenários de teste abrangem caminhos de sucesso e caminhos de erro, val
 
 | Item | Valor |
 | :--- | :--- |
-| Métodos documentados | 31 |
-| Controllers documentados | 2 |
-| Models documentados | 0 |
+| Métodos documentados | 35 |
+| Controllers documentados | 3 |
+| Services documentados | 3 |
 
 Todos os métodos implementados ou modificados receberam documentação estruturada contendo:
 * Descrição técnica da operação;
@@ -226,9 +226,9 @@ Todos os métodos implementados ou modificados receberam documentação estrutur
 
 | Item | Antes | Depois |
 | :--- | :--- | :--- |
-| ABC Score máximo | 46.9 | 12.1 |
-| Cobertura dos testes | 0% | 100% |
-| Métodos documentados | 0 | 31 |
+| ABC Score máximo | 31.59 | 10.63 |
+| Cobertura dos testes | 84.71% | 100% |
+| Métodos documentados | 0 | 35 |
 
 # Métricas de Qualidade - Maria Luiza Rodrigues
 #### Complexidade Ciclomática e ABC Score (RubyCritic)
